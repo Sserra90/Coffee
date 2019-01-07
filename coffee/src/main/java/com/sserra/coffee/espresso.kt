@@ -19,3 +19,15 @@ fun onViewWithText(text: String): ViewInteraction =
 
 fun onViewWithDescription(res: Int): ViewInteraction =
         Espresso.onView(ViewMatchers.withContentDescription(res))
+
+val <T> T.changeToPortrait: T
+    get() {
+        rootView.perform(OrientationChangeAction.orientationPortrait())
+        return this
+    }
+
+val <T> T.changeToLandscape: T
+    get() {
+        rootView.perform(OrientationChangeAction.orientationLandscape())
+        return this
+    }
