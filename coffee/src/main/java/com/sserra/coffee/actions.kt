@@ -6,8 +6,10 @@ import android.content.ContextWrapper
 import android.content.pm.ActivityInfo
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import org.hamcrest.Matcher
 
@@ -50,5 +52,32 @@ class OrientationChangeAction private constructor(private val orientation: Int) 
     companion object {
         fun orientationLandscape(): ViewAction = OrientationChangeAction(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
         fun orientationPortrait(): ViewAction = OrientationChangeAction(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+    }
+}
+
+/**
+ * State to scroll the recycler view, the ViewActions scroll state, doesn't not trigger
+ * the scroll listener in RecyclerView, i guess because of a bug in the RecyclerView, calling
+ * the smoothScroll method on the layoutManager solves the problem.
+ *
+ * @param position to scroll
+ */
+fun recyclerScrollTo(position: Int): ViewAction {
+    return object : ViewAction {
+
+        override fun getConstraints(): Matcher<View> = org.hamcrest.Matchers.allOf(
+                ViewMatchers.isAssignableFrom(RecyclerView::class.java),
+                ViewMatchers.isDisplayed()
+        )
+
+        override fun getDescription(): String = "scroll RecyclerView to position: $position"
+
+        override fun perform(uiController: UiController, view: View) {
+            val recyclerView = view as RecyclerView
+            recyclerView.layoutManager!!.smoothScrollToPosition(
+                    recyclerView, null, position
+            )
+            uiController.loopMainThreadForAtLeast(2000)
+        }
     }
 }
