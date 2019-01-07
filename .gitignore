@@ -1,0 +1,15 @@
+# Android Studio
+.gradle/
+.idea/
+*.iml
+*.iws
+*.ipr
+/build
+/captures
+/schemas
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# OS Specific
+.DS_Store
