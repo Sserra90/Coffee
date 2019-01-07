@@ -18,4 +18,5 @@ abstract class Page {
         } catch (expected: NoActivityResumedException) {
         }
     }
+    fun whenever(block: Page.() -> Unit = {}): Page = apply { block() }
 }

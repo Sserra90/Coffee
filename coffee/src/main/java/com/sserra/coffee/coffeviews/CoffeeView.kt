@@ -69,6 +69,8 @@ open class CoffeeView(
             viewInteraction.isNotClickable()
         }
 
+    fun click(): CoffeeView = apply { viewInteraction.click() }
+
     infix fun CoffeeView.shouldBe(value: Float): CoffeeView = apply {
         when (check) {
             Check.TextSize -> viewInteraction.hasTextSize(value)
