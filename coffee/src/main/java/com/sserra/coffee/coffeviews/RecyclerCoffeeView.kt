@@ -42,8 +42,11 @@ class RecyclerCoffeeView(id: Int, block: RecyclerCoffeeView.() -> Unit = {}) : C
         scrollToPos(0)
     }
 
-    fun <T : CoffeeView> at(pos: Int): T {
+    fun <T : CoffeeView> atPos(pos: Int, block: T.() -> Unit): T {
         @Suppress("UNCHECKED_CAST")
-        return CoffeeView(Espresso.onView(recyclerViewMatcher.atPosition(pos))) as T
+        return CoffeeView(
+                Espresso.onView(recyclerViewMatcher.atPosition(pos)),
+                block as (CoffeeView.() -> Unit)
+        ) as T
     }
 }
