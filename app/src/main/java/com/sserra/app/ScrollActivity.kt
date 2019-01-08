@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.scroll_activity.*
 
 class ScrollActivity : AppCompatActivity() {
 
@@ -14,5 +15,9 @@ class ScrollActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.scroll_activity)
+
+        card5.setOnClickListener {
+            ScrollActivity.start(this)
+        }
     }
 }

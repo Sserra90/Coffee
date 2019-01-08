@@ -3,7 +3,9 @@ package com.sserra.app
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sserra.app.ScrollActivity
 import com.sserra.coffee.coffeepages.Page
+import com.sserra.coffee.coffeviews.CoffeeView
 import com.sserra.coffee.coffeviews.ScrollCoffeeView
+import com.sserra.coffee.coffeviews.then
 import com.sserra.coffee.intentRule
 import org.junit.Before
 import org.junit.Rule
@@ -35,7 +37,11 @@ class ScrollViewTest {
         ScrollPage {
             scrollView {
                 isVisible
-                scrollTo(R.id.card5)
+
+                scrollTo<CoffeeView>(R.id.card5) {
+                    click()
+                }
+
             }
         }
     }

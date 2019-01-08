@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.scroll_activity.*
 
 class MainActivity : AppCompatActivity() {
 

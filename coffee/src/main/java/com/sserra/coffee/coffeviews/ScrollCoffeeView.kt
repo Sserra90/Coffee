@@ -17,7 +17,11 @@ class ScrollCoffeeView(
 
     constructor(id: Int, block: ScrollCoffeeView.() -> Unit = {}) : this(onViewById(id), block)
 
-    fun scrollTo(id: Int): ScrollCoffeeView = apply { viewInteraction.scrollTo(id) }
+    fun <T : CoffeeView> scrollTo(id: Int, block: T.() -> Unit): T {
+        viewInteraction.scrollTo(id)
+        @Suppress("UNCHECKED_CAST")
+        return CoffeeView(onViewById(id), block as (CoffeeView.() -> Unit)) as T
+    }
 
     fun scrollToBottom(): ScrollCoffeeView = apply { viewInteraction.perform(swipeUp()) }
 
