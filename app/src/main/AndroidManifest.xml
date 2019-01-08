@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ScrollActivity" />
+        <activity android:name=".RecyclerViewActivity" />
     </application>
 
 </manifest>

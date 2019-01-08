@@ -17,7 +17,7 @@ class ScrollActivity : AppCompatActivity() {
         setContentView(R.layout.scroll_activity)
 
         card5.setOnClickListener {
-            ScrollActivity.start(this)
+            RecyclerViewActivity.start(this)
         }
     }
 }
