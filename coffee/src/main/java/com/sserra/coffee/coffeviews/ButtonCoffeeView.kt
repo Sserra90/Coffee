@@ -6,7 +6,7 @@ import com.sserra.coffee.onViewById
 class ButtonCoffeeView(
         viewInteraction: ViewInteraction,
         block: ButtonCoffeeView.() -> Unit = {}
-) : TextViewCoffeeView(viewInteraction) {
+) : TextCoffeeView(viewInteraction) {
 
     init {
         block()

@@ -35,11 +35,13 @@ class ScrollViewTest {
     @Test
     fun canScroll() {
         ScrollPage {
+
             scrollView {
                 isVisible
 
                 scrollTo<CoffeeView>(R.id.card5) {
                     click()
+                    isOpen(ScrollActivity::class.java)
                 }
 
             }

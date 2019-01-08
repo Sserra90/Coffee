@@ -3,33 +3,33 @@ package com.sserra.coffee.coffeviews
 import androidx.test.espresso.ViewInteraction
 import com.sserra.coffee.onViewById
 
-open class TextViewCoffeeView(
+open class TextCoffeeView(
         viewInteraction: ViewInteraction,
-        block: TextViewCoffeeView.() -> Unit = {}
+        block: TextCoffeeView.() -> Unit = {}
 ) : CoffeeView(viewInteraction) {
 
     init {
         block()
     }
 
-    constructor(id: Int, block: TextViewCoffeeView.() -> Unit = {}) : this(onViewById(id), block)
+    constructor(id: Int, block: TextCoffeeView.() -> Unit = {}) : this(onViewById(id), block)
 
-    val text: TextViewCoffeeView
+    val text: TextCoffeeView
         get() = apply {
             check = Check.Text
         }
 
-    val textColor: TextViewCoffeeView
+    val textColor: TextCoffeeView
         get() = apply {
             check = Check.TextColor
         }
 
-    val textSize: TextViewCoffeeView
+    val textSize: TextCoffeeView
         get() = apply {
             check = Check.TextSize
         }
 
-    val textStyle: TextViewCoffeeView
+    val textStyle: TextCoffeeView
         get() = apply {}
 
 }
