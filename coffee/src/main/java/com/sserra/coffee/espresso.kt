@@ -3,7 +3,10 @@ package com.sserra.coffee
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withTagValue
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.sserra.coffee.machers.childViewById
+import org.hamcrest.Matchers.`is`
 
 val rootView: ViewInteraction =
         Espresso.onView(ViewMatchers.isRoot())
@@ -16,6 +19,9 @@ fun onChildViewById(parentId: Int, id: Int): ViewInteraction =
 
 fun onViewWithText(text: String): ViewInteraction =
         Espresso.onView(ViewMatchers.withText(text))
+
+fun onViewWithTag(tag: String): ViewInteraction =
+        Espresso.onView(withTagValue(`is`(tag)))
 
 fun onViewWithDescription(res: Int): ViewInteraction =
         Espresso.onView(ViewMatchers.withContentDescription(res))

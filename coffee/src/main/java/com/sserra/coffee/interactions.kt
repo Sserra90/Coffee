@@ -71,4 +71,6 @@ fun ViewInteraction.click(): ViewInteraction = perform(ViewActions.click())
 fun ViewInteraction.scrollToPos(pos: Int): ViewInteraction =
         perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(pos))
 
-fun ViewInteraction.scrollTo(id: Int): ViewInteraction = onViewById(id).perform(scrollTo())
+fun ViewInteraction.scrollToViewWithId(id: Int): ViewInteraction = onViewById(id).perform(scrollTo())
+fun ViewInteraction.scrollToViewWithTag(tag: String): ViewInteraction = onViewWithTag(tag).perform(scrollTo())
+fun ViewInteraction.scrollToViewWithText(text: String): ViewInteraction = onViewWithText(text).perform(scrollTo())

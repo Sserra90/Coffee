@@ -3,8 +3,7 @@ package com.sserra.coffee.coffeviews
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.action.ViewActions.swipeUp
-import com.sserra.coffee.onViewById
-import com.sserra.coffee.scrollTo
+import com.sserra.coffee.*
 
 class ScrollCoffeeView(
         private val viewInteraction: ViewInteraction,
@@ -17,8 +16,20 @@ class ScrollCoffeeView(
 
     constructor(id: Int, block: ScrollCoffeeView.() -> Unit = {}) : this(onViewById(id), block)
 
+    fun <T : CoffeeView> scrollToViewWithText(text: String, block: T.() -> Unit): T {
+        viewInteraction.scrollToViewWithText(text)
+        @Suppress("UNCHECKED_CAST")
+        return CoffeeView(onViewWithText(text), block as (CoffeeView.() -> Unit)) as T
+    }
+
+    fun <T : CoffeeView> scrollToViewWithTag(tag: String, block: T.() -> Unit): T {
+        viewInteraction.scrollToViewWithTag(tag)
+        @Suppress("UNCHECKED_CAST")
+        return CoffeeView(onViewWithTag(tag), block as (CoffeeView.() -> Unit)) as T
+    }
+
     fun <T : CoffeeView> scrollTo(id: Int, block: T.() -> Unit): T {
-        viewInteraction.scrollTo(id)
+        viewInteraction.scrollToViewWithId(id)
         @Suppress("UNCHECKED_CAST")
         return CoffeeView(onViewById(id), block as (CoffeeView.() -> Unit)) as T
     }
