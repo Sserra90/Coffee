@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
@@ -69,3 +70,5 @@ fun ViewInteraction.notDisplayed(): ViewInteraction = check(ViewAssertions.match
 fun ViewInteraction.click(): ViewInteraction = perform(ViewActions.click())
 fun ViewInteraction.scrollToPos(pos: Int): ViewInteraction =
         perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(pos))
+
+fun ViewInteraction.scrollTo(id: Int): ViewInteraction = onViewById(id).perform(scrollTo())
