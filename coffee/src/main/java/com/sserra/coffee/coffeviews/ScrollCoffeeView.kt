@@ -6,7 +6,7 @@ import androidx.test.espresso.action.ViewActions.swipeUp
 import com.sserra.coffee.*
 
 class ScrollCoffeeView(
-        private val viewInteraction: ViewInteraction,
+        viewInteraction: ViewInteraction,
         block: ScrollCoffeeView.() -> Unit = {}
 ) : CoffeeView(viewInteraction) {
 

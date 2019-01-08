@@ -1,22 +1,49 @@
 package com.sserra.coffee.coffeviews
 
-import androidx.test.espresso.ViewInteraction
-import androidx.test.espresso.action.ViewActions.swipeDown
-import androidx.test.espresso.action.ViewActions.swipeUp
-import com.sserra.coffee.*
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.rule.ActivityTestRule
+import com.sserra.coffee.machers.LayoutManager
+import com.sserra.coffee.machers.RecyclerViewMatcher
+import com.sserra.coffee.machers.withLayoutManager
+import com.sserra.coffee.onViewById
+import com.sserra.coffee.scrollRecyclerToPos
 
-class RecyclerCoffeeView(
-        private val viewInteraction: ViewInteraction,
-        block: RecyclerCoffeeView.() -> Unit = {}
-) : CoffeeView(viewInteraction) {
+class RecyclerCoffeeView(id: Int, block: RecyclerCoffeeView.() -> Unit = {}) : CoffeeView(onViewById(id)) {
+
+    private var activityRule: ActivityTestRule<*>? = null
+    private val recyclerViewMatcher: RecyclerViewMatcher = RecyclerViewMatcher(id)
+
+    constructor(
+            rule: ActivityTestRule<*>,
+            id: Int,
+            block: RecyclerCoffeeView.() -> Unit = {}
+    ) : this(id, block) {
+        activityRule = rule
+    }
 
     init {
         block()
     }
 
-    constructor(id: Int, block: RecyclerCoffeeView.() -> Unit = {}) : this(onViewById(id), block)
+    val usingGridLayoutManager: RecyclerCoffeeView
+        get() = apply {
+            viewInteraction.check(ViewAssertions.matches(withLayoutManager(LayoutManager.GRID)))
+        }
 
-    fun scrollToBottom(): RecyclerCoffeeView = apply { viewInteraction.perform(swipeUp()) }
+    val usingLinearLayoutManager: RecyclerCoffeeView
+        get() = apply {
+            viewInteraction.check(ViewAssertions.matches(withLayoutManager(LayoutManager.LINEAR)))
+        }
 
-    fun scrollToTop(): RecyclerCoffeeView = apply { viewInteraction.perform(swipeDown()) }
+    fun scrollToPos(pos: Int): RecyclerCoffeeView = apply { viewInteraction.scrollRecyclerToPos(pos) }
+
+    fun scrollToTop(): RecyclerCoffeeView = apply {
+        scrollToPos(0)
+    }
+
+    fun <T : CoffeeView> at(pos: Int): T {
+        @Suppress("UNCHECKED_CAST")
+        return CoffeeView(Espresso.onView(recyclerViewMatcher.atPosition(pos))) as T
+    }
 }

@@ -55,10 +55,10 @@ class RecyclerViewMatcher(private val recyclerViewId: Int, private val position:
                 }
 
                 return if (targetViewId == -1) {
-                    view === childView
+                    view == childView
                 } else {
                     val targetView = childView!!.findViewById<View>(targetViewId)
-                    view === targetView
+                    view == targetView
                 }
             }
         }
@@ -101,11 +101,11 @@ class RecyclerViewMatcher(private val recyclerViewId: Int, private val position:
                 }
 
                 return if (targetViewId == -1) {
-                    view === childView
+                    view == childView
                 } else {
                     val targetView = childView!!.findViewById<View>(targetViewId)
                     val childView = targetView.findViewById<View>(childViewId)
-                    childView === view
+                    childView == view
                 }
             }
         }

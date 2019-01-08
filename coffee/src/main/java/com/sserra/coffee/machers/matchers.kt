@@ -13,6 +13,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.internal.util.Checks
 import com.sserra.coffee.toDp
@@ -306,6 +309,42 @@ fun withElevation(expectedSize: Int): Matcher<View> {
         override fun describeTo(description: Description) {
             description.appendText("with elevation size: ${view?.elevation}")
             description.appendValue(expectedSize)
+        }
+    }
+}
+
+
+enum class LayoutManager {
+    LINEAR, GRID
+}
+
+/**
+ * Custom matcher to check [RecyclerView] layout manager
+ *
+ * @param type expected layout manager type
+ */
+fun withLayoutManager(type: LayoutManager): Matcher<View> {
+    return object : TypeSafeMatcher<View>(View::class.java) {
+
+        private var view: RecyclerView? = null
+
+        override fun matchesSafely(target: View): Boolean {
+
+            if (target !is RecyclerView) {
+                return false
+            }
+
+            view = target
+            return when (target.layoutManager) {
+                is LinearLayoutManager -> type == LayoutManager.LINEAR
+                is StaggeredGridLayoutManager -> type == LayoutManager.GRID
+                else -> false
+            }
+        }
+
+        override fun describeTo(description: Description) {
+            description.appendText("with layout manager size: ${view?.layoutManager.toString()}")
+            description.appendValue(" expected $type")
         }
     }
 }

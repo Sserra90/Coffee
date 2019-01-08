@@ -26,7 +26,7 @@ sealed class Check {
 }
 
 open class CoffeeView(
-        private val viewInteraction: ViewInteraction,
+        protected val viewInteraction: ViewInteraction,
         block: CoffeeView.() -> Unit = {}
 ) {
 

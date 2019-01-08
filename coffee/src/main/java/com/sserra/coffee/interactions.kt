@@ -74,3 +74,6 @@ fun ViewInteraction.scrollToPos(pos: Int): ViewInteraction =
 fun ViewInteraction.scrollToViewWithId(id: Int): ViewInteraction = onViewById(id).perform(scrollTo())
 fun ViewInteraction.scrollToViewWithTag(tag: String): ViewInteraction = onViewWithTag(tag).perform(scrollTo())
 fun ViewInteraction.scrollToViewWithText(text: String): ViewInteraction = onViewWithText(text).perform(scrollTo())
+
+fun ViewInteraction.scrollRecyclerToPos(pos:Int):ViewInteraction =
+        perform(recyclerScrollTo(pos))
