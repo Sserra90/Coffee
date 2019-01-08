@@ -1,5 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.github.dcendents.android-maven'
+
+// Jitpack group
+group = 'com.github.Sserra90.coffee'
 
 android {
     compileSdkVersion 28
