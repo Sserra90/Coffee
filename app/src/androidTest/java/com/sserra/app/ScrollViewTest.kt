@@ -5,9 +5,9 @@ import com.sserra.coffee.coffeepages.Page
 import com.sserra.coffee.coffeviews.CoffeeView
 import com.sserra.coffee.coffeviews.ScrollCoffeeView
 import com.sserra.coffee.intentRule
+import com.sserra.coffee.onViewWithMatcher
 import org.junit.Before
 import org.junit.Rule
-
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -15,7 +15,9 @@ import org.junit.runner.RunWith
 class ScrollViewTest {
 
     class ScrollPage : Page<ScrollPage>() {
-        val scrollView: ScrollCoffeeView = ScrollCoffeeView(R.id.scrollView)
+        val scrollView = ScrollCoffeeView(R.id.scrollView) {
+            add<CoffeeView<*>> { CoffeeView<Any>(onViewWithMatcher(it)) }
+        }
     }
 
     @get:Rule

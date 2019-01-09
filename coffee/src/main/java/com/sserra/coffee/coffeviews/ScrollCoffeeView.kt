@@ -4,22 +4,34 @@ import android.view.View
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.action.ViewActions.swipeUp
-import com.sserra.coffee.*
+import androidx.test.espresso.matcher.ViewMatchers
+import com.sserra.coffee.onViewById
+import com.sserra.coffee.onViewWithMatcher
+import com.sserra.coffee.scrollToViewWithId
+import org.junit.Assert
 import org.hamcrest.Matcher
+import org.junit.Assert.fail
 
 class ScrollCoffeeView(
-        viewInteraction: ViewInteraction
+        viewInteraction: ViewInteraction,
+        block: ItemsFactory.() -> Unit
 ) : CoffeeView<ScrollCoffeeView>(viewInteraction) {
 
-    constructor(id: Int) : this(onViewById(id))
-    constructor(matcher: Matcher<View>) : this(onViewWithMatcher(matcher))
+    val itemsFactory: ItemsFactory = ItemsFactory(block)
 
-    fun <T : CoffeeView<*>> scrollTo(id: Int, block: CoffeeView<*>.() -> Unit): T {
+    constructor(id: Int, block: ItemsFactory.() -> Unit) : this(onViewById(id), block)
+    constructor(matcher: Matcher<View>, block: ItemsFactory.() -> Unit) : this(onViewWithMatcher(matcher), block)
+
+    inline fun <reified T : CoffeeView<*>> scrollTo(id: Int, block: T.() -> Unit) {
+        val factory = itemsFactory.items[T::class]
+        if (factory == null) {
+            fail("No view provided for ${T::class}")
+        }
+
+        @Suppress("PROTECTED_CALL_FROM_PUBLIC_INLINE")
         viewInteraction.scrollToViewWithId(id)
-        @Suppress("UNCHECKED_CAST")
-        val v = CoffeeView<Any>(onViewById(id))
-        block.invoke(v)
-        return v as T
+        val view = factory!!.invoke(ViewMatchers.withId(id)) as T
+        block.invoke(view)
     }
 
     fun scrollToBottom(): ScrollCoffeeView = apply { viewInteraction.perform(swipeUp()) }
