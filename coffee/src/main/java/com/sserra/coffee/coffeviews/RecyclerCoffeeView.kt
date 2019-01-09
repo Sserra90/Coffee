@@ -11,10 +11,23 @@ import junit.framework.Assert.fail
 import org.hamcrest.Matcher
 import kotlin.reflect.KClass
 
-class RecyclerCoffeeView(
-        val id: Int,
-        var items: Map<KClass<*>, (matcher: Matcher<View>) -> CoffeeView<*>>
-) : CoffeeView<RecyclerCoffeeView>(onViewById(id)) {
+class ItemsFactory(block: ItemsFactory.() -> Unit) {
+    val items: Items = Items()
+
+    init {
+        block()
+    }
+
+    inline fun <reified T> add(noinline view: (matcher: Matcher<View>) -> CoffeeView<*>) {
+        items[T::class] = view
+    }
+}
+
+class Items : HashMap<KClass<*>, (matcher: Matcher<View>) -> CoffeeView<*>>()
+
+class RecyclerCoffeeView(val id: Int, block: ItemsFactory.() -> Unit) : CoffeeView<RecyclerCoffeeView>(onViewById(id)) {
+
+    val itemsFactory: ItemsFactory = ItemsFactory(block)
 
     val recyclerViewMatcher: RecyclerViewMatcher = RecyclerViewMatcher(id)
 
@@ -40,7 +53,7 @@ class RecyclerCoffeeView(
     }
 
     inline fun <reified T : CoffeeView<*>> atPos(pos: Int, block: T.() -> Unit) {
-        val factory = items[T::class]
+        val factory = itemsFactory.items[T::class]
         if (factory == null) {
             fail("No view provided for ${T::class}")
         }

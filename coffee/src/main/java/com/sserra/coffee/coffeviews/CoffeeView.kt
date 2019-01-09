@@ -103,3 +103,14 @@ open class CoffeeView<T>(protected val viewInteraction: ViewInteraction) {
     }
 
 }
+
+abstract class AdapterCoffeeView<T>(private val parent: Matcher<View>) : CoffeeView<T>(Espresso.onView(parent)) {
+    fun withId(id: Int): Matcher<View> = allOf(
+            ViewMatchers.isDescendantOfA(parent),
+            ViewMatchers.withId(id)
+    )
+    fun withMatcher(matcher: Matcher<View>): Matcher<View> = allOf(
+            ViewMatchers.isDescendantOfA(parent),
+            matcher
+    )
+}
