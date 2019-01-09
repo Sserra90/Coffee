@@ -9,7 +9,6 @@ import com.sserra.coffee.coffeviews.CoffeeView
 import com.sserra.coffee.coffeviews.RecyclerCoffeeView
 import com.sserra.coffee.coffeviews.TextCoffeeView
 import com.sserra.coffee.intentRule
-import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
 import org.junit.Before
@@ -32,20 +31,19 @@ class RecyclerViewTest {
             }
     }
 
-
     abstract class AdapterCoffeeView<T>(private val parent: Matcher<View>) : CoffeeView<T>(onView(parent)) {
-        fun withParent(id: Int): Matcher<View> = allOf(
+        fun withId(id: Int): Matcher<View> = allOf(
                 ViewMatchers.isDescendantOfA(parent),
                 ViewMatchers.withId(id)
         )
-        fun withParent(matcher: Matcher<View>): Matcher<View> = allOf(
+        fun withMatcher(matcher: Matcher<View>): Matcher<View> = allOf(
                 ViewMatchers.isDescendantOfA(parent),
                 matcher
         )
     }
 
     class CityView(matcher: Matcher<View>) : AdapterCoffeeView<CityView>(matcher) {
-        val title: TextCoffeeView = TextCoffeeView(withParent(R.id.name))
+        val title: TextCoffeeView = TextCoffeeView(withId(R.id.name))
     }
 
     @get:Rule
