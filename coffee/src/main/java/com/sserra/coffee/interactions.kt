@@ -61,6 +61,9 @@ infix fun ViewInteraction.hasText(text: String): ViewInteraction =
 infix fun ViewInteraction.hasText(@StringRes textRes: Int): ViewInteraction =
         isDisplayed().check(ViewAssertions.matches(ViewMatchers.withText(textRes)))
 
+infix fun ViewInteraction.recyclerItemCount(itemCount: Int): ViewInteraction =
+        check(RecyclerViewItemCountAssertion.withItemCount(itemCount))
+
 fun ViewInteraction.isClickable(): ViewInteraction = check(ViewAssertions.matches(ViewMatchers.isClickable()))
 fun ViewInteraction.isNotClickable(): ViewInteraction = check(ViewAssertions.matches(Matchers.not(ViewMatchers.isClickable())))
 
@@ -75,5 +78,5 @@ fun ViewInteraction.scrollToViewWithId(id: Int): ViewInteraction = onViewById(id
 fun ViewInteraction.scrollToViewWithTag(tag: String): ViewInteraction = onViewWithTag(tag).perform(scrollTo())
 fun ViewInteraction.scrollToViewWithText(text: String): ViewInteraction = onViewWithText(text).perform(scrollTo())
 
-fun ViewInteraction.scrollRecyclerToPos(pos:Int):ViewInteraction =
+fun ViewInteraction.scrollRecyclerToPos(pos: Int): ViewInteraction =
         perform(recyclerScrollTo(pos))

@@ -3,6 +3,7 @@ package com.sserra.coffee.coffeviews
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.rule.ActivityTestRule
+import com.sserra.coffee.RecyclerViewItemCountAssertion
 import com.sserra.coffee.machers.LayoutManager
 import com.sserra.coffee.machers.RecyclerViewMatcher
 import com.sserra.coffee.machers.withLayoutManager
@@ -25,6 +26,11 @@ class RecyclerCoffeeView(id: Int, block: RecyclerCoffeeView.() -> Unit = {}) : C
     init {
         block()
     }
+
+    val itemCount: RecyclerCoffeeView
+        get() = apply {
+            check = Check.ItemCount
+        }
 
     val usingGridLayoutManager: RecyclerCoffeeView
         get() = apply {

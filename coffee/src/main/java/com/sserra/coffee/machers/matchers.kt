@@ -343,7 +343,7 @@ fun withLayoutManager(type: LayoutManager): Matcher<View> {
         }
 
         override fun describeTo(description: Description) {
-            description.appendText("with layout manager size: ${view?.layoutManager.toString()}")
+            description.appendText("with layout manager: ${view?.layoutManager.toString()}")
             description.appendValue(" expected $type")
         }
     }

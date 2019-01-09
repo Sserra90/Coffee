@@ -23,6 +23,7 @@ sealed class Check {
     object TextColor : Check()
     object TextSize : Check()
     object Text : Check()
+    object ItemCount : Check()
 }
 
 open class CoffeeView(
@@ -86,6 +87,7 @@ open class CoffeeView(
             Check.Text -> viewInteraction.hasText(value)
             Check.TextColor -> viewInteraction.hasTextColor(value)
             Check.Elevation -> viewInteraction.hasElevation(value)
+            Check.ItemCount -> viewInteraction.recyclerItemCount(value)
         }
     }
 
