@@ -1,15 +1,20 @@
 package com.sserra.coffee
 
+import android.view.View
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withTagValue
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.sserra.coffee.machers.childViewById
+import org.hamcrest.Matcher
 import org.hamcrest.Matchers.`is`
 
 val rootView: ViewInteraction =
         Espresso.onView(ViewMatchers.isRoot())
+
+fun onViewWithMatcher(matcher: Matcher<View>): ViewInteraction =
+        Espresso.onView(matcher)
 
 fun onViewById(id: Int): ViewInteraction =
         Espresso.onView(ViewMatchers.withId(id))

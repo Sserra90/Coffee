@@ -1,7 +1,14 @@
 package com.sserra.coffee.coffeviews
 
+import android.view.View
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.*
 import com.sserra.coffee.*
+import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.Matcher
 
 const val VISIBLE = true
 const val GONE = false

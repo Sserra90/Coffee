@@ -1,15 +1,18 @@
 package com.sserra.coffee.coffeviews
 
+import android.view.View
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.action.ViewActions.swipeUp
 import com.sserra.coffee.*
+import org.hamcrest.Matcher
 
 class ScrollCoffeeView(
         viewInteraction: ViewInteraction
 ) : CoffeeView<ScrollCoffeeView>(viewInteraction) {
 
     constructor(id: Int) : this(onViewById(id))
+    constructor(matcher: Matcher<View>) : this(onViewWithMatcher(matcher))
 
     fun <T : CoffeeView<*>> scrollTo(id: Int, block: CoffeeView<*>.() -> Unit): T {
         viewInteraction.scrollToViewWithId(id)

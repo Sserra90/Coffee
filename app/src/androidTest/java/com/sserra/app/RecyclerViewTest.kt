@@ -2,14 +2,14 @@ package com.sserra.app
 
 import android.view.View
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sserra.coffee.coffeepages.Page
 import com.sserra.coffee.coffeviews.CoffeeView
 import com.sserra.coffee.coffeviews.RecyclerCoffeeView
 import com.sserra.coffee.coffeviews.TextCoffeeView
 import com.sserra.coffee.intentRule
+import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
 import org.junit.Before
@@ -32,9 +32,20 @@ class RecyclerViewTest {
             }
     }
 
-    class CityView(private val matcher: Matcher<View>) : TextCoffeeView(onView(matcher)) {
-        val title: TextCoffeeView
-            get() = TextCoffeeView(onView(allOf(isDescendantOfA(matcher), withId(R.id.name))))
+
+    abstract class AdapterCoffeeView<T>(private val parent: Matcher<View>) : CoffeeView<T>(onView(parent)) {
+        fun withParent(id: Int): Matcher<View> = allOf(
+                ViewMatchers.isDescendantOfA(parent),
+                ViewMatchers.withId(id)
+        )
+        fun withParent(matcher: Matcher<View>): Matcher<View> = allOf(
+                ViewMatchers.isDescendantOfA(parent),
+                matcher
+        )
+    }
+
+    class CityView(matcher: Matcher<View>) : AdapterCoffeeView<CityView>(matcher) {
+        val title: TextCoffeeView = TextCoffeeView(withParent(R.id.name))
     }
 
     @get:Rule
