@@ -7,11 +7,11 @@ import com.sserra.coffee.coffeviews.CoffeeView
 import com.sserra.coffee.coffeviews.ToolbarCoffeeView
 import com.sserra.coffee.onViewWithDescription
 
-abstract class PageWithToolbar(private val toolbarId: Int, private val appBarId: Int) : Page() {
-    fun appBar(block: CoffeeView.() -> Unit = {}): CoffeeView = CoffeeView(appBarId, block)
-    fun toolbar(block: ToolbarCoffeeView.() -> Unit = {}): ToolbarCoffeeView =
-            ToolbarCoffeeView(toolbarId, block)
+abstract class PageWithToolbar<T>(private val toolbarId: Int, private val appBarId: Int) : Page<PageWithToolbar<T>>() {
+
+    val appBar: CoffeeView<*> get() = CoffeeView<Any>(appBarId)
+    val toolbar: ToolbarCoffeeView get() = ToolbarCoffeeView(toolbarId)
 
     @SuppressLint("PrivateResource")
-    fun navigateUp(): Page = apply { onViewWithDescription(R.string.abc_action_bar_up_description).click() }
+    fun navigateUp(): PageWithToolbar<T> = apply { onViewWithDescription(R.string.abc_action_bar_up_description).click() }
 }

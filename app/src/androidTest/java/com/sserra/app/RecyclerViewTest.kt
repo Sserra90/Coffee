@@ -1,26 +1,40 @@
 package com.sserra.app
 
+import android.view.View
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sserra.coffee.coffeepages.Page
 import com.sserra.coffee.coffeviews.CoffeeView
 import com.sserra.coffee.coffeviews.RecyclerCoffeeView
 import com.sserra.coffee.coffeviews.TextCoffeeView
 import com.sserra.coffee.intentRule
+import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.Matcher
 import org.junit.Before
 import org.junit.Rule
 
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.reflect.KClass
 
 @RunWith(AndroidJUnit4::class)
 class RecyclerViewTest {
 
-    class RecyclerPage(block: RecyclerPage.() -> Unit) : Page() {
-        init {
-            block()
-        }
+    class RecyclerPage : Page<RecyclerPage>() {
+        val recyclerView: RecyclerCoffeeView
+            get() {
+                val items: Map<KClass<*>, (matcher: Matcher<View>) -> CoffeeView<*>> = mapOf(
+                        CityView::class to { matcher -> CityView(matcher) }
+                )
+                return RecyclerCoffeeView(R.id.list, items)
+            }
+    }
 
-        fun recyclerView(block: RecyclerCoffeeView.() -> Unit): RecyclerCoffeeView = RecyclerCoffeeView(R.id.list, block)
+    class CityView(private val matcher: Matcher<View>) : TextCoffeeView(onView(matcher)) {
+        val title: TextCoffeeView
+            get() = TextCoffeeView(onView(allOf(isDescendantOfA(matcher), withId(R.id.name))))
     }
 
     @get:Rule
@@ -33,7 +47,8 @@ class RecyclerViewTest {
 
     @Test
     fun recyclerViewTest() {
-        RecyclerPage {
+        val page = RecyclerPage()
+        page {
 
             recyclerView {
                 isVisible
@@ -41,8 +56,11 @@ class RecyclerViewTest {
                 itemCount shouldBe 50
 
                 //scrollToPos(25)
-                atPos<CoffeeView>(0) {
+                atPos<CityView>(0) {
                     isClickable
+                    title {
+                        text shouldBe "Albania"
+                    }
                 }
             }
         }

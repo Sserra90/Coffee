@@ -1,31 +1,22 @@
 package com.sserra.coffee.coffeviews
 
-import androidx.test.espresso.Espresso
+import android.view.View
 import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.rule.ActivityTestRule
-import com.sserra.coffee.RecyclerViewItemCountAssertion
 import com.sserra.coffee.machers.LayoutManager
 import com.sserra.coffee.machers.RecyclerViewMatcher
 import com.sserra.coffee.machers.withLayoutManager
 import com.sserra.coffee.onViewById
 import com.sserra.coffee.scrollRecyclerToPos
+import junit.framework.Assert.fail
+import org.hamcrest.Matcher
+import kotlin.reflect.KClass
 
-class RecyclerCoffeeView(id: Int, block: RecyclerCoffeeView.() -> Unit = {}) : CoffeeView(onViewById(id)) {
+class RecyclerCoffeeView(
+        val id: Int,
+        var items: Map<KClass<*>, (matcher: Matcher<View>) -> CoffeeView<*>>
+) : CoffeeView<RecyclerCoffeeView>(onViewById(id)) {
 
-    private var activityRule: ActivityTestRule<*>? = null
-    private val recyclerViewMatcher: RecyclerViewMatcher = RecyclerViewMatcher(id)
-
-    constructor(
-            rule: ActivityTestRule<*>,
-            id: Int,
-            block: RecyclerCoffeeView.() -> Unit = {}
-    ) : this(id, block) {
-        activityRule = rule
-    }
-
-    init {
-        block()
-    }
+    val recyclerViewMatcher: RecyclerViewMatcher = RecyclerViewMatcher(id)
 
     val itemCount: RecyclerCoffeeView
         get() = apply {
@@ -48,11 +39,14 @@ class RecyclerCoffeeView(id: Int, block: RecyclerCoffeeView.() -> Unit = {}) : C
         scrollToPos(0)
     }
 
-    fun <T : CoffeeView> atPos(pos: Int, block: T.() -> Unit): T {
-        @Suppress("UNCHECKED_CAST")
-        return CoffeeView(
-                Espresso.onView(recyclerViewMatcher.atPosition(pos)),
-                block as (CoffeeView.() -> Unit)
-        ) as T
+    inline fun <reified T : CoffeeView<*>> atPos(pos: Int, block: T.() -> Unit) {
+        val factory = items[T::class]
+        if (factory == null) {
+            fail("No view provided for ${T::class}")
+        }
+
+        val matcher = recyclerViewMatcher.atPosition(pos)
+        val view = factory!!.invoke(matcher) as T
+        block.invoke(view)
     }
 }

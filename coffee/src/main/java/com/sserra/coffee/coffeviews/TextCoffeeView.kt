@@ -4,32 +4,29 @@ import androidx.test.espresso.ViewInteraction
 import com.sserra.coffee.onViewById
 
 open class TextCoffeeView(
-        viewInteraction: ViewInteraction,
-        block: TextCoffeeView.() -> Unit = {}
-) : CoffeeView(viewInteraction) {
+        viewInteraction: ViewInteraction
+) : AbsTextCoffeeView<TextCoffeeView>(viewInteraction)
 
-    init {
-        block()
-    }
+open class AbsTextCoffeeView<T>(viewInteraction: ViewInteraction) : CoffeeView<T>(viewInteraction) {
 
-    constructor(id: Int, block: TextCoffeeView.() -> Unit = {}) : this(onViewById(id), block)
+    constructor(id: Int) : this(onViewById(id))
 
-    val text: TextCoffeeView
+    val text: AbsTextCoffeeView<T>
         get() = apply {
             check = Check.Text
         }
 
-    val textColor: TextCoffeeView
+    val textColor: AbsTextCoffeeView<T>
         get() = apply {
             check = Check.TextColor
         }
 
-    val textSize: TextCoffeeView
+    val textSize: AbsTextCoffeeView<T>
         get() = apply {
             check = Check.TextSize
         }
 
-    val textStyle: TextCoffeeView
+    val textStyle: AbsTextCoffeeView<T>
         get() = apply {}
 
 }

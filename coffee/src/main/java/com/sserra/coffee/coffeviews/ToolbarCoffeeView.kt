@@ -6,15 +6,10 @@ import com.sserra.coffee.*
 
 
 class ToolbarCoffeeView(
-        viewInteraction: ViewInteraction,
-        block: ToolbarCoffeeView.() -> Unit = {}
-) : CoffeeView(viewInteraction) {
+        viewInteraction: ViewInteraction
+) : CoffeeView<ToolbarCoffeeView>(viewInteraction) {
 
-    init {
-        block()
-    }
-
-    constructor(id: Int, block: ToolbarCoffeeView.() -> Unit = {}) : this(onViewById(id), block)
+    constructor(id: Int) : this(onViewById(id))
 
     val title: ToolbarCoffeeView
         get() = apply {

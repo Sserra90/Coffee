@@ -26,60 +26,58 @@ sealed class Check {
     object ItemCount : Check()
 }
 
-open class CoffeeView(
-        protected val viewInteraction: ViewInteraction,
-        block: CoffeeView.() -> Unit = {}
-) {
+open class CoffeeView<T>(protected val viewInteraction: ViewInteraction) {
 
     protected var check: Check = Check.None
 
-    constructor(id: Int, block: CoffeeView.() -> Unit = {}) : this(onViewById(id), block)
+    constructor(id: Int) : this(onViewById(id))
 
-    init {
-        block()
+    operator fun invoke(function: T.() -> Unit) {
+        @Suppress("UNCHECKED_CAST")
+        function.invoke(this as T)
     }
 
-    val isVisible: CoffeeView
+    val isVisible: CoffeeView<T>
         get() = apply { viewInteraction shouldBe VISIBLE }
 
-    val isGone: CoffeeView
+    val isGone: CoffeeView<T>
         get() = apply { viewInteraction shouldBe GONE }
 
-    val childrenNr: CoffeeView
+    val childrenNr: CoffeeView<T>
         get() = apply {
             check = Check.ChildrenNr
         }
 
-    val backgroundColor: CoffeeView
+    val backgroundColor: CoffeeView<T>
         get() = apply {
             check = Check.BackgroundColor
         }
 
-    val elevation: CoffeeView
+    val elevation: CoffeeView<T>
         get() = apply {
             check = Check.Elevation
         }
 
-    val isClickable: CoffeeView
+    val isClickable: CoffeeView<T>
         get() = apply {
             viewInteraction.isClickable()
         }
 
-    val isNotClickable: CoffeeView
+    val isNotClickable: CoffeeView<T>
         get() = apply {
             viewInteraction.isNotClickable()
         }
 
-    fun click(): CoffeeView = apply { viewInteraction.click() }
+    fun click(): CoffeeView<T> = apply { viewInteraction.click() }
 
-    infix fun CoffeeView.shouldBe(value: Float): CoffeeView = apply {
+    infix fun CoffeeView<T>.shouldBe(value: Float): CoffeeView<T> = apply {
         when (check) {
             Check.TextSize -> viewInteraction.hasTextSize(value)
             Check.Elevation -> viewInteraction.hasElevation(value)
         }
     }
 
-    infix fun CoffeeView.shouldBe(value: Int): CoffeeView = apply {
+    infix fun CoffeeView<T>.shouldBe(value: Int): CoffeeView<T> = apply {
         when (check) {
             Check.ChildrenNr -> viewInteraction.hasChildrenNumber(value)
             Check.BackgroundColor -> viewInteraction.hasBackground(value)
@@ -91,7 +89,7 @@ open class CoffeeView(
         }
     }
 
-    infix fun CoffeeView.shouldBe(value: String): CoffeeView = apply {
+    infix fun CoffeeView<T>.shouldBe(value: String): CoffeeView<T> = apply {
         when (check) {
             Check.Text -> viewInteraction.hasText(value)
         }
