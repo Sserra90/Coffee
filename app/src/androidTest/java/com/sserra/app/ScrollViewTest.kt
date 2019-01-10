@@ -2,6 +2,8 @@ package com.sserra.app
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sserra.coffee.coffeepages.Page
+import com.sserra.coffee.coffeepages.PageWithToolbar
+import com.sserra.coffee.coffeviews.BaseCoffeeView
 import com.sserra.coffee.coffeviews.CoffeeView
 import com.sserra.coffee.coffeviews.ScrollCoffeeView
 import com.sserra.coffee.intentRule
@@ -14,9 +16,9 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class ScrollViewTest {
 
-    class ScrollPage : Page<ScrollPage>() {
+    class ScrollPage : PageWithToolbar<ScrollPage>(1,1) {
         val scrollView = ScrollCoffeeView(R.id.scrollView) {
-            add<CoffeeView<*>> { CoffeeView<Any>(onViewWithMatcher(it)) }
+            add<BaseCoffeeView<*>> { CoffeeView(onViewWithMatcher(it)) }
         }
     }
 
@@ -34,11 +36,12 @@ class ScrollViewTest {
         scrollPage {
             scrollView {
                 isVisible
-                scrollTo<CoffeeView<*>>(R.id.card5) {
+                scrollTo<BaseCoffeeView<*>>(R.id.card5) {
                     click()
                 }
                 isOpen(ScrollActivity::class.java)
             }
+
         }
     }
 }

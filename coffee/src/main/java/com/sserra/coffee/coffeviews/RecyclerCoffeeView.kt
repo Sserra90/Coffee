@@ -18,14 +18,14 @@ class ItemsFactory(block: ItemsFactory.() -> Unit) {
         block()
     }
 
-    inline fun <reified T> add(noinline view: (matcher: Matcher<View>) -> CoffeeView<*>) {
+    inline fun <reified T> add(noinline view: (matcher: Matcher<View>) -> BaseCoffeeView<*>) {
         items[T::class] = view
     }
 }
 
-class Items : HashMap<KClass<*>, (matcher: Matcher<View>) -> CoffeeView<*>>()
+class Items : HashMap<KClass<*>, (matcher: Matcher<View>) -> BaseCoffeeView<*>>()
 
-class RecyclerCoffeeView(val id: Int, block: ItemsFactory.() -> Unit) : CoffeeView<RecyclerCoffeeView>(onViewById(id)) {
+class RecyclerCoffeeView(val id: Int, block: ItemsFactory.() -> Unit) : BaseCoffeeView<RecyclerCoffeeView>(onViewById(id)) {
 
     val itemsFactory: ItemsFactory = ItemsFactory(block)
 
@@ -52,7 +52,7 @@ class RecyclerCoffeeView(val id: Int, block: ItemsFactory.() -> Unit) : CoffeeVi
         scrollToPos(0)
     }
 
-    inline fun <reified T : CoffeeView<*>> atPos(pos: Int, block: T.() -> Unit) {
+    inline fun <reified T : BaseCoffeeView<*>> atPos(pos: Int, block: T.() -> Unit) {
         val factory = itemsFactory.items[T::class]
         if (factory == null) {
             fail("No view provided for ${T::class}")

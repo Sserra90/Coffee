@@ -9,7 +9,7 @@ import org.hamcrest.Matcher
 
 class ToolbarCoffeeView(
         viewInteraction: ViewInteraction
-) : CoffeeView<ToolbarCoffeeView>(viewInteraction) {
+) : BaseCoffeeView<ToolbarCoffeeView>(viewInteraction) {
 
     constructor(id: Int) : this(onViewById(id))
     constructor(matcher: Matcher<View>) : this(onViewWithMatcher(matcher))

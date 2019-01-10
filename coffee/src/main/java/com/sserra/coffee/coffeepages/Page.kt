@@ -8,7 +8,7 @@ import com.sserra.coffee.checkIntended
 import com.sserra.coffee.eqEntry
 import org.junit.Assert
 
-open class Page<T : Page<T>> {
+open class Page<out T : Page<T>> {
 
     operator fun invoke(function: T.() -> Unit) {
         @Suppress("UNCHECKED_CAST")

@@ -4,9 +4,7 @@ import android.view.View
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.*
 import com.sserra.coffee.*
-import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
 
@@ -33,7 +31,11 @@ sealed class Check {
     object ItemCount : Check()
 }
 
-open class CoffeeView<T>(protected val viewInteraction: ViewInteraction) {
+open class CoffeeView(viewInteraction: ViewInteraction) : BaseCoffeeView<CoffeeView>(viewInteraction) {
+    constructor(id: Int) : this(onViewById(id))
+}
+
+abstract class BaseCoffeeView<T>(protected val viewInteraction: ViewInteraction) {
 
     protected var check: Check = Check.None
 
@@ -44,47 +46,47 @@ open class CoffeeView<T>(protected val viewInteraction: ViewInteraction) {
         function.invoke(this as T)
     }
 
-    val isVisible: CoffeeView<T>
+    val isVisible: BaseCoffeeView<T>
         get() = apply { viewInteraction shouldBe VISIBLE }
 
-    val isGone: CoffeeView<T>
+    val isGone: BaseCoffeeView<T>
         get() = apply { viewInteraction shouldBe GONE }
 
-    val childrenNr: CoffeeView<T>
+    val childrenNr: BaseCoffeeView<T>
         get() = apply {
             check = Check.ChildrenNr
         }
 
-    val backgroundColor: CoffeeView<T>
+    val backgroundColor: BaseCoffeeView<T>
         get() = apply {
             check = Check.BackgroundColor
         }
 
-    val elevation: CoffeeView<T>
+    val elevation: BaseCoffeeView<T>
         get() = apply {
             check = Check.Elevation
         }
 
-    val isClickable: CoffeeView<T>
+    val isClickable: BaseCoffeeView<T>
         get() = apply {
             viewInteraction.isClickable()
         }
 
-    val isNotClickable: CoffeeView<T>
+    val isNotClickable: BaseCoffeeView<T>
         get() = apply {
             viewInteraction.isNotClickable()
         }
 
-    fun click(): CoffeeView<T> = apply { viewInteraction.click() }
+    fun click(): BaseCoffeeView<T> = apply { viewInteraction.click() }
 
-    infix fun CoffeeView<T>.shouldBe(value: Float): CoffeeView<T> = apply {
+    infix fun BaseCoffeeView<T>.shouldBe(value: Float): BaseCoffeeView<T> = apply {
         when (check) {
             Check.TextSize -> viewInteraction.hasTextSize(value)
             Check.Elevation -> viewInteraction.hasElevation(value)
         }
     }
 
-    infix fun CoffeeView<T>.shouldBe(value: Int): CoffeeView<T> = apply {
+    infix fun BaseCoffeeView<T>.shouldBe(value: Int): BaseCoffeeView<T> = apply {
         when (check) {
             Check.ChildrenNr -> viewInteraction.hasChildrenNumber(value)
             Check.BackgroundColor -> viewInteraction.hasBackground(value)
@@ -96,7 +98,7 @@ open class CoffeeView<T>(protected val viewInteraction: ViewInteraction) {
         }
     }
 
-    infix fun CoffeeView<T>.shouldBe(value: String): CoffeeView<T> = apply {
+    infix fun BaseCoffeeView<T>.shouldBe(value: String): BaseCoffeeView<T> = apply {
         when (check) {
             Check.Text -> viewInteraction.hasText(value)
         }
@@ -104,7 +106,7 @@ open class CoffeeView<T>(protected val viewInteraction: ViewInteraction) {
 
 }
 
-abstract class AdapterCoffeeView<T>(private val parent: Matcher<View>) : CoffeeView<T>(Espresso.onView(parent)) {
+abstract class AdapterCoffeeView<T>(private val parent: Matcher<View>) : BaseCoffeeView<T>(Espresso.onView(parent)) {
     fun withId(id: Int): Matcher<View> = allOf(
             ViewMatchers.isDescendantOfA(parent),
             ViewMatchers.withId(id)

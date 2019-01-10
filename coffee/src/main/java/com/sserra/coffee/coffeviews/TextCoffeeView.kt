@@ -9,7 +9,7 @@ open class TextCoffeeView(viewInteraction: ViewInteraction) : AbsTextCoffeeView<
     constructor(matcher: Matcher<View>) : this(onViewWithMatcher(matcher))
 }
 
-open class AbsTextCoffeeView<T>(viewInteraction: ViewInteraction) : CoffeeView<T>(viewInteraction) {
+open class AbsTextCoffeeView<T>(viewInteraction: ViewInteraction) : BaseCoffeeView<T>(viewInteraction) {
 
     val text: AbsTextCoffeeView<T>
         get() = apply {
