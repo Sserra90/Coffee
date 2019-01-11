@@ -8,10 +8,10 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +24,8 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
 import org.hamcrest.TypeSafeMatcher
+import org.w3c.dom.Text
+import java.lang.reflect.Field
 import kotlin.math.roundToInt
 
 /**
@@ -313,7 +315,6 @@ fun withElevation(expectedSize: Int): Matcher<View> {
     }
 }
 
-
 enum class LayoutManager {
     LINEAR, GRID
 }
@@ -348,3 +349,95 @@ fun withLayoutManager(type: LayoutManager): Matcher<View> {
         }
     }
 }
+
+/**
+ * Custom matcher to check [LinearLayout] orientation
+ *
+ * @param orientation expected orientation
+ */
+fun withOrientation(orientation: Int): Matcher<View> {
+    return object : TypeSafeMatcher<View>(View::class.java) {
+
+        private var actualOrientation: Int? = null
+
+        override fun matchesSafely(item: View): Boolean {
+            if (item !is LinearLayout) {
+                return false
+            }
+
+            actualOrientation = item.orientation
+            return actualOrientation == orientation
+        }
+
+        override fun describeTo(description: Description) {
+            description.appendText("with orientation: $actualOrientation")
+            description.appendValue(" expected $orientation")
+        }
+
+    }
+}
+
+/**
+ * Custom matcher to check views gravity
+ *
+ * @param gravity expected gravity
+ */
+fun withGravity(gravity: Int): Matcher<View> {
+    return object : TypeSafeMatcher<View>(View::class.java) {
+
+        private var actualGravity: Int? = null
+
+        override fun matchesSafely(target: View): Boolean {
+            actualGravity = when (target) {
+                is TextView -> target.gravity
+                is LinearLayout -> getGravity(target)
+                is RelativeLayout -> target.gravity
+                else -> return false
+            }
+            return gravity == actualGravity
+        }
+
+        override fun describeTo(description: Description) {
+            description.appendText("with gravity: $actualGravity")
+            description.appendValue(" expected $gravity")
+        }
+
+        private fun getGravity(linearLayout: LinearLayout): Int {
+            val field: Field = LinearLayout::class.java.getDeclaredField("mGravity")
+            field.isAccessible = true
+            return field.getInt(linearLayout)
+        }
+    }
+}
+
+/**
+ * Custom matcher to check views gravity
+ *
+ * @param gravity expected gravity
+ */
+/*fun withLayoutGravity(layoutGravity: Int): Matcher<View> {
+    return object : TypeSafeMatcher<View>(View::class.java) {
+
+        private var actualGravity: Int? = null
+
+        override fun matchesSafely(target: View): Boolean {
+            actualGravity = when (target) {
+                is LinearLayout -> getGravity(target)
+                is RelativeLayout -> (target.layoutParams as RelativeLayout.LayoutParams).
+                else -> return false
+            }
+            return layoutGravity == actualGravity
+        }
+
+        override fun describeTo(description: Description) {
+            description.appendText("with gravity: $actualGravity")
+            description.appendValue(" expected $gravity")
+        }
+
+        private fun getGravity(linearLayout: LinearLayout): Int {
+            val field: Field = LinearLayout::class.java.getDeclaredField("mGravity")
+            field.isAccessible = true
+            return field.getInt(linearLayout)
+        }
+    }
+}*/

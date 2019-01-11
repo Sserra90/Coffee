@@ -23,6 +23,14 @@ class MainActivity : AppCompatActivity() {
         recyclerBtn.setOnClickListener {
             RecyclerViewActivity.start(this)
         }
+
+        relativeBtn.setOnClickListener {
+            RelativeLayoutActivity.start(this)
+        }
+
+        linearBtn.setOnClickListener {
+            LinearLayoutActivity.start(this)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

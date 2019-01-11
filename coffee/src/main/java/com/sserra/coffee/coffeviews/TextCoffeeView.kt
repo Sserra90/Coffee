@@ -29,4 +29,9 @@ open class AbsTextCoffeeView<T>(viewInteraction: ViewInteraction) : BaseCoffeeVi
     val textStyle: AbsTextCoffeeView<T>
         get() = apply {}
 
+    val gravity: AbsTextCoffeeView<T>
+        get() = apply {
+            check = Check.Gravity
+        }
+
 }

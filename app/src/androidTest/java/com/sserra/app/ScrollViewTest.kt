@@ -34,6 +34,7 @@ class ScrollViewTest {
     fun canScroll() {
         val scrollPage = ScrollPage()
         scrollPage {
+
             scrollView {
                 isVisible
                 scrollTo<BaseCoffeeView<*>>(R.id.card5) {
@@ -41,7 +42,6 @@ class ScrollViewTest {
                 }
                 isOpen(ScrollActivity::class.java)
             }
-
         }
     }
 }

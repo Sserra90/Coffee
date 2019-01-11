@@ -7,12 +7,10 @@ import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
-import com.sserra.coffee.machers.withDrawable
-import com.sserra.coffee.machers.withElevation
-import com.sserra.coffee.machers.withFontSize
-import com.sserra.coffee.machers.withToolbarTitle
+import com.sserra.coffee.machers.*
 import org.hamcrest.Matchers
 
 
@@ -80,3 +78,9 @@ fun ViewInteraction.scrollToViewWithText(text: String): ViewInteraction = onView
 
 fun ViewInteraction.scrollRecyclerToPos(pos: Int): ViewInteraction =
         perform(recyclerScrollTo(pos))
+
+infix fun ViewInteraction.hasOrientation(orientation: Int): ViewInteraction =
+        check(matches(withOrientation(orientation)))
+
+infix fun ViewInteraction.hasGravity(gravity: Int): ViewInteraction =
+        check(matches(withGravity(gravity)))

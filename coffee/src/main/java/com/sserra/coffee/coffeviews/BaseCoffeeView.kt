@@ -29,6 +29,9 @@ sealed class Check {
     object TextSize : Check()
     object Text : Check()
     object ItemCount : Check()
+    object Gravity : Check()
+    object LayoutGravity : Check()
+    object Orientation : Check()
 }
 
 open class CoffeeView(viewInteraction: ViewInteraction) : BaseCoffeeView<CoffeeView>(viewInteraction) {
@@ -95,6 +98,8 @@ abstract class BaseCoffeeView<T>(protected val viewInteraction: ViewInteraction)
             Check.TextColor -> viewInteraction.hasTextColor(value)
             Check.Elevation -> viewInteraction.hasElevation(value)
             Check.ItemCount -> viewInteraction.recyclerItemCount(value)
+            Check.Orientation -> viewInteraction.hasOrientation(value)
+            Check.Gravity -> viewInteraction.hasGravity(value)
         }
     }
 
@@ -111,6 +116,7 @@ abstract class AdapterCoffeeView<T>(private val parent: Matcher<View>) : BaseCof
             ViewMatchers.isDescendantOfA(parent),
             ViewMatchers.withId(id)
     )
+
     fun withMatcher(matcher: Matcher<View>): Matcher<View> = allOf(
             ViewMatchers.isDescendantOfA(parent),
             matcher
