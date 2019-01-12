@@ -1,5 +1,7 @@
 package com.sserra.coffee
 
+import android.graphics.Typeface
+import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
@@ -84,3 +86,12 @@ infix fun ViewInteraction.hasOrientation(orientation: Int): ViewInteraction =
 
 infix fun ViewInteraction.hasGravity(gravity: Int): ViewInteraction =
         check(matches(withGravity(gravity)))
+
+infix fun ViewInteraction.hasTextAllCaps(allCaps: Boolean): ViewInteraction =
+        check(matches(withTextAllCaps(allCaps)))
+
+infix fun ViewInteraction.hasScaleType(scaleType: ImageView.ScaleType): ViewInteraction =
+        check(matches(withScaleType(scaleType)))
+
+infix fun ViewInteraction.hasTypeface(typeface: Int): ViewInteraction =
+        check(matches(withTextStyle(typeface)))

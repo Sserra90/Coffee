@@ -1,12 +1,16 @@
 package com.sserra.app
 
+import android.graphics.Typeface
+import android.graphics.Typeface.*
 import android.view.Gravity
+import android.widget.ImageView
+import android.widget.ImageView.ScaleType.CENTER_CROP
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sserra.coffee.coffeepages.Page
-import com.sserra.coffee.coffeepages.PageWithToolbar
-import com.sserra.coffee.coffeviews.*
+import com.sserra.coffee.coffeviews.ImageCoffeeView
+import com.sserra.coffee.coffeviews.RelativeLayoutCoffeeView
+import com.sserra.coffee.coffeviews.TextCoffeeView
 import com.sserra.coffee.intentRule
-import com.sserra.coffee.onViewWithMatcher
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -17,10 +21,12 @@ class RelativeViewTest {
 
     class RelativePage : Page<RelativePage>() {
         val relativeView: RelativeLayoutCoffeeView = RelativeLayoutCoffeeView(R.id.layout)
+        val title: TextCoffeeView = TextCoffeeView(R.id.title)
+        val image: ImageCoffeeView = ImageCoffeeView(R.id.image)
     }
 
     @get:Rule
-    val activityRule = intentRule<ScrollActivity>()
+    val activityRule = intentRule<RelativeLayoutActivity>()
 
     @Before
     fun before() {
@@ -35,6 +41,17 @@ class RelativeViewTest {
                 isVisible
                 layoutGravity shouldBe Gravity.CENTER
                 gravity shouldBe Gravity.CENTER
+
+                title {
+                    isVisible
+                    textAllCaps shouldBe true
+                    textStyle shouldBe ITALIC
+                }
+
+                image {
+                    isVisible
+                    scaleType shouldBe CENTER_CROP
+                }
             }
         }
     }

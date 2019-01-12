@@ -4,14 +4,18 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.view.Gravity
+import android.text.method.TransformationMethod
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +28,6 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
 import org.hamcrest.TypeSafeMatcher
-import org.w3c.dom.Text
 import java.lang.reflect.Field
 import kotlin.math.roundToInt
 
@@ -441,3 +444,83 @@ fun withGravity(gravity: Int): Matcher<View> {
         }
     }
 }*/
+
+/**
+ * Custom matcher to check [TextView] textAllCaps
+ *
+ * @param allCaps
+ */
+fun withTextAllCaps(allCaps: Boolean): Matcher<View> {
+    return object : TypeSafeMatcher<View>(View::class.java) {
+
+        private var view: TextView? = null
+
+        override fun matchesSafely(target: View): Boolean {
+            if (target !is TextView) {
+                return false
+            }
+            view = target
+            return isAllCaps(target) == allCaps
+        }
+
+        private fun isAllCaps(view: TextView): Boolean {
+            val method: TransformationMethod? = view.transformationMethod
+            return method != null && method.getTransformation("text", view).toString() == "TEXT"
+        }
+
+        override fun describeTo(description: Description) {
+            description.appendText("with textAllCaps: ${view?.transformationMethod}")
+            description.appendValue(" expected $allCaps")
+        }
+    }
+}
+
+/**
+ * Custom matcher to check [TextView] textStyle
+ *
+ * @param textStyle
+ */
+fun withTextStyle(textStyle: Int): Matcher<View> {
+    return object : TypeSafeMatcher<View>(View::class.java) {
+
+        private var view: TextView? = null
+
+        override fun matchesSafely(target: View): Boolean {
+            if (target !is TextView) {
+                return false
+            }
+            view = target
+            return target.typeface.style == textStyle
+        }
+
+        override fun describeTo(description: Description) {
+            description.appendText("with textStyle: ${view?.typeface}")
+            description.appendValue(" expected $textStyle")
+        }
+    }
+}
+
+/**
+ * Custom matcher to check [ImageView] scaleType
+ *
+ * @param scaleType
+ */
+fun withScaleType(scaleType: ImageView.ScaleType): Matcher<View> {
+    return object : TypeSafeMatcher<View>(View::class.java) {
+
+        private var view: ImageView? = null
+
+        override fun matchesSafely(target: View): Boolean {
+            if (target !is ImageView) {
+                return false
+            }
+            view = target
+            return target.scaleType == scaleType
+        }
+
+        override fun describeTo(description: Description) {
+            description.appendText("with textAllCaps: ${view?.scaleType}")
+            description.appendValue(" expected $scaleType")
+        }
+    }
+}

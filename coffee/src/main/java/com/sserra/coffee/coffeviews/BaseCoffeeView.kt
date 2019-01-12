@@ -1,6 +1,8 @@
 package com.sserra.coffee.coffeviews
 
+import android.graphics.Typeface
 import android.view.View
+import android.widget.ImageView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.matcher.ViewMatchers
@@ -30,8 +32,11 @@ sealed class Check {
     object Text : Check()
     object ItemCount : Check()
     object Gravity : Check()
+    object TextAllCaps : Check()
+    object TextStyle : Check()
     object LayoutGravity : Check()
     object Orientation : Check()
+    object ScaleType : Check()
 }
 
 open class CoffeeView(viewInteraction: ViewInteraction) : BaseCoffeeView<CoffeeView>(viewInteraction) {
@@ -100,6 +105,7 @@ abstract class BaseCoffeeView<T>(protected val viewInteraction: ViewInteraction)
             Check.ItemCount -> viewInteraction.recyclerItemCount(value)
             Check.Orientation -> viewInteraction.hasOrientation(value)
             Check.Gravity -> viewInteraction.hasGravity(value)
+            Check.TextStyle -> viewInteraction.hasTypeface(value)
         }
     }
 
@@ -107,6 +113,16 @@ abstract class BaseCoffeeView<T>(protected val viewInteraction: ViewInteraction)
         when (check) {
             Check.Text -> viewInteraction.hasText(value)
         }
+    }
+
+    infix fun BaseCoffeeView<T>.shouldBe(value: Boolean): BaseCoffeeView<T> = apply {
+        when (check) {
+            Check.TextAllCaps -> viewInteraction.hasTextAllCaps(value)
+        }
+    }
+
+    infix fun BaseCoffeeView<T>.shouldBe(scaleType: ImageView.ScaleType): BaseCoffeeView<T> = apply {
+        viewInteraction.hasScaleType(scaleType)
     }
 
 }
