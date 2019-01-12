@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -22,8 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.internal.util.Checks
-import com.sserra.coffee.toDp
-import com.sserra.coffee.toSp
+import com.sserra.coffee.*
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
@@ -143,7 +141,7 @@ fun withDrawable(resourceId: Int): TypeSafeMatcher<View> {
 
         override fun matchesSafely(target: View): Boolean {
             if (expectedDrawable == null) {
-                loadDrawableFromResources(target.context)
+                loadDrawableFromResources(target.context, resourceId)
             }
 
             if (invalidExpectedDrawable()) {
@@ -157,19 +155,6 @@ fun withDrawable(resourceId: Int): TypeSafeMatcher<View> {
             return if (target is TextView) {
                 hasCompoundDrawable(target) || hasBackground(target)
             } else hasBackground(target)
-        }
-
-        private fun loadDrawableFromResources(context: Context) {
-            try {
-                expectedDrawable = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                    context.resources.getDrawable(resourceId)
-                } else {
-                    context.getDrawable(resourceId)
-                }
-                resourceName = context.resources.getResourceEntryName(resourceId)
-            } catch (ignored: Resources.NotFoundException) {
-                // view could be from a context unaware of the resource id.
-            }
         }
 
         private fun invalidExpectedDrawable(): Boolean = expectedDrawable == null
@@ -193,41 +178,54 @@ fun withDrawable(resourceId: Int): TypeSafeMatcher<View> {
             } else areDrawablesIdentical(expectedDrawable!!, drawable)
         }
 
-        private fun areDrawablesIdentical(drawableA: Drawable, drawableB: Drawable): Boolean {
-            val stateA = drawableA.constantState
-            val stateB = drawableB.constantState
-            // If the constant state is identical, they are using the same drawable resource.
-            // However, the opposite is not necessarily true.
-            return stateA != null && stateB != null && stateA == stateB
-                    || getBitmap(drawableA).sameAs(getBitmap(drawableB))
-        }
-
-        private fun getBitmap(drawable: Drawable): Bitmap {
-            val result: Bitmap
-            if (drawable is BitmapDrawable) {
-                result = drawable.bitmap
-            } else {
-                var width = drawable.intrinsicWidth
-                var height = drawable.intrinsicHeight
-                // Some drawables have no intrinsic width - e.g. solid colours.
-                if (width <= 0) {
-                    width = 1
-                }
-                if (height <= 0) {
-                    height = 1
-                }
-
-                result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-                val canvas = Canvas(result)
-                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight())
-                drawable.draw(canvas)
+        override fun describeTo(description: Description) {
+            description.appendText("with drawable from resource id: ")
+            description.appendValue(resourceId)
+            if (resourceName != null) {
+                description.appendText("[")
+                description.appendText(resourceName)
+                description.appendText("]")
             }
-            return result
+        }
+    }
+}
+
+/**
+ * Custom matcher to check [TextView] drawables
+ *
+ * @param resId drawable resource to compare
+ * @param direction drawable direction
+ */
+fun withTextDrawable(resId: Int, direction: DrawableDirection): Matcher<View> {
+
+    return object : TypeSafeMatcher<View>() {
+
+        private var resourceName: String? = null
+        private var expectedDrawable: Drawable? = null
+
+        override fun matchesSafely(item: View): Boolean {
+            if (item !is TextView) {
+                return false
+            }
+
+            val d: Drawable = when (direction) {
+                DrawableDirection.BOTTOM -> item.compoundDrawables[3]
+                DrawableDirection.TOP -> item.compoundDrawables[1]
+                DrawableDirection.START -> item.compoundDrawables[0]
+                DrawableDirection.END -> item.compoundDrawables[2]
+            } ?: return false
+
+            expectedDrawable = loadDrawableFromResources(item.context, resId)
+            if (expectedDrawable == null) {
+                return false
+            }
+
+            return areDrawablesIdentical(expectedDrawable!!, d)
         }
 
         override fun describeTo(description: Description) {
             description.appendText("with drawable from resource id: ")
-            description.appendValue(resourceId)
+            description.appendValue(resId)
             if (resourceName != null) {
                 description.appendText("[")
                 description.appendText(resourceName)

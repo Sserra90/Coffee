@@ -1,6 +1,5 @@
 package com.sserra.coffee
 
-import android.graphics.Typeface
 import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
@@ -95,3 +94,6 @@ infix fun ViewInteraction.hasScaleType(scaleType: ImageView.ScaleType): ViewInte
 
 infix fun ViewInteraction.hasTypeface(typeface: Int): ViewInteraction =
         check(matches(withTextStyle(typeface)))
+
+fun ViewInteraction.hasTextDrawable(resId: Int, direction: DrawableDirection): ViewInteraction =
+        check(matches(withTextDrawable(resId, direction)))

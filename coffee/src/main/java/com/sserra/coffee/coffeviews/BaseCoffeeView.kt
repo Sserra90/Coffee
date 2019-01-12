@@ -1,6 +1,5 @@
 package com.sserra.coffee.coffeviews
 
-import android.graphics.Typeface
 import android.view.View
 import android.widget.ImageView
 import androidx.test.espresso.Espresso
@@ -37,6 +36,11 @@ sealed class Check {
     object LayoutGravity : Check()
     object Orientation : Check()
     object ScaleType : Check()
+
+    object DrawableLeft : Check()
+    object DrawableTop : Check()
+    object DrawableRight : Check()
+    object DrawableBottom : Check()
 }
 
 open class CoffeeView(viewInteraction: ViewInteraction) : BaseCoffeeView<CoffeeView>(viewInteraction) {
@@ -106,6 +110,10 @@ abstract class BaseCoffeeView<T>(protected val viewInteraction: ViewInteraction)
             Check.Orientation -> viewInteraction.hasOrientation(value)
             Check.Gravity -> viewInteraction.hasGravity(value)
             Check.TextStyle -> viewInteraction.hasTypeface(value)
+            Check.DrawableRight -> viewInteraction.hasTextDrawable(value, DrawableDirection.END)
+            Check.DrawableLeft -> viewInteraction.hasTextDrawable(value, DrawableDirection.START)
+            Check.DrawableBottom -> viewInteraction.hasTextDrawable(value, DrawableDirection.BOTTOM)
+            Check.DrawableTop -> viewInteraction.hasTextDrawable(value, DrawableDirection.TOP)
         }
     }
 

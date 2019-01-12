@@ -43,4 +43,24 @@ open class AbsTextCoffeeView<T>(viewInteraction: ViewInteraction) : BaseCoffeeVi
             check = Check.TextStyle
         }
 
+    val drawableStart: AbsTextCoffeeView<T>
+        get() = apply {
+            check = Check.DrawableLeft
+        }
+
+    val drawableEnd: AbsTextCoffeeView<T>
+        get() = apply {
+            check = Check.DrawableRight
+        }
+
+    val drawableTop: AbsTextCoffeeView<T>
+        get() = apply {
+            check = Check.DrawableTop
+        }
+
+    val drawableBottom: AbsTextCoffeeView<T>
+        get() = apply {
+            check = Check.DrawableBottom
+        }
+
 }

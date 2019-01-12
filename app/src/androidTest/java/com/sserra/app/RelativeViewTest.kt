@@ -1,9 +1,7 @@
 package com.sserra.app
 
-import android.graphics.Typeface
-import android.graphics.Typeface.*
+import android.graphics.Typeface.ITALIC
 import android.view.Gravity
-import android.widget.ImageView
 import android.widget.ImageView.ScaleType.CENTER_CROP
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sserra.coffee.coffeepages.Page
@@ -46,6 +44,7 @@ class RelativeViewTest {
                     isVisible
                     textAllCaps shouldBe true
                     textStyle shouldBe ITALIC
+                    drawableStart shouldBe R.drawable.ic_launcher_background
                 }
 
                 image {
