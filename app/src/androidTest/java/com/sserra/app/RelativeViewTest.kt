@@ -50,6 +50,7 @@ class RelativeViewTest {
                 image {
                     isVisible
                     scaleType shouldBe CENTER_CROP
+                    alpha shouldBe 0.8F
                 }
             }
         }

@@ -45,6 +45,12 @@ infix fun ViewInteraction.hasToolbarTitle(@StringRes title: Int): ViewInteractio
 infix fun ViewInteraction.hasElevation(size: Float): ViewInteraction =
         check(ViewAssertions.matches(withElevation(size)))
 
+infix fun ViewInteraction.hasWeight(weight: Float): ViewInteraction =
+        check(ViewAssertions.matches(withWeight(weight)))
+
+infix fun ViewInteraction.hasAlpha(alpha: Float): ViewInteraction =
+        check(ViewAssertions.matches(ViewMatchers.withAlpha(alpha)))
+
 infix fun ViewInteraction.hasElevation(size: Int): ViewInteraction =
         check(ViewAssertions.matches(withElevation(size)))
 

@@ -36,11 +36,12 @@ sealed class Check {
     object LayoutGravity : Check()
     object Orientation : Check()
     object ScaleType : Check()
-
     object DrawableLeft : Check()
     object DrawableTop : Check()
     object DrawableRight : Check()
     object DrawableBottom : Check()
+    object Weight : Check()
+    object Alpha : Check()
 }
 
 open class CoffeeView(viewInteraction: ViewInteraction) : BaseCoffeeView<CoffeeView>(viewInteraction) {
@@ -89,12 +90,24 @@ abstract class BaseCoffeeView<T>(protected val viewInteraction: ViewInteraction)
             viewInteraction.isNotClickable()
         }
 
+    val weight: BaseCoffeeView<T>
+        get() = apply {
+            check = Check.Weight
+        }
+
+    val alpha: BaseCoffeeView<T>
+        get() = apply {
+            check = Check.Alpha
+        }
+
     fun click(): BaseCoffeeView<T> = apply { viewInteraction.click() }
 
     infix fun BaseCoffeeView<T>.shouldBe(value: Float): BaseCoffeeView<T> = apply {
         when (check) {
             Check.TextSize -> viewInteraction.hasTextSize(value)
             Check.Elevation -> viewInteraction.hasElevation(value)
+            Check.Weight -> viewInteraction.hasWeight(value)
+            Check.Alpha -> viewInteraction.hasAlpha(value)
         }
     }
 

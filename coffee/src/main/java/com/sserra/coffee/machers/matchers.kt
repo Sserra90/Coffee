@@ -1,10 +1,5 @@
 package com.sserra.coffee.machers
 
-import android.content.Context
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -22,6 +17,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.internal.util.Checks
 import com.sserra.coffee.*
+import junit.framework.Assert.fail
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
@@ -519,6 +515,32 @@ fun withScaleType(scaleType: ImageView.ScaleType): Matcher<View> {
         override fun describeTo(description: Description) {
             description.appendText("with textAllCaps: ${view?.scaleType}")
             description.appendValue(" expected $scaleType")
+        }
+    }
+}
+
+/**
+ * Custom matcher to check [View] weight property
+ *
+ * @param weight
+ */
+fun withWeight(weight: Float): Matcher<View> {
+    return object : TypeSafeMatcher<View>(View::class.java) {
+
+        private var actualWeight: Int? = null
+
+        override fun matchesSafely(target: View): Boolean {
+            if (target.layoutParams !is LinearLayout.LayoutParams) {
+                fail("View $target parent is not a LinearLayout")
+            }
+
+            val actualWeight = (target.layoutParams as LinearLayout.LayoutParams).weight
+            return weight == actualWeight
+        }
+
+        override fun describeTo(description: Description) {
+            description.appendText("with weight: $actualWeight")
+            description.appendValue(" expected $weight")
         }
     }
 }

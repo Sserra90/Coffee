@@ -21,6 +21,8 @@
         android:id="@+id/image"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:alpha="0.8"
         android:layout_below="@+id/title"
         android:scaleType="centerCrop" />
+
 </RelativeLayout>
