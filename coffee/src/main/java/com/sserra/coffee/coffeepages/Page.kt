@@ -28,8 +28,8 @@ open class Page<out T : Page<T>> {
         }
     }
 
-    fun isOpen(aclass: Class<*>, vararg extras: Pair<String, Any>): Page<T> = apply {
-        checkIntended(aclass, extras.map { eqEntry(it.first, it.second) })
+    inline fun <reified V> isOpen(vararg extras: Pair<String, Any>): Page<T> = apply {
+        checkIntended(V::class.java, extras.map { eqEntry(it.first, it.second) })
     }
 
     fun whenever(block: T.() -> Unit = {}): T {

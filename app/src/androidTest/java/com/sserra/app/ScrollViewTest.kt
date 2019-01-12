@@ -40,7 +40,7 @@ class ScrollViewTest {
                 scrollTo<BaseCoffeeView<*>>(R.id.card5) {
                     click()
                 }
-                isOpen(ScrollActivity::class.java)
+                isOpen<ScrollActivity>()
             }
         }
     }
