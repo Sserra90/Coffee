@@ -19,6 +19,11 @@ class ToolbarCoffeeView(
             check = Check.ToolbarTitle
         }
 
+    val subtitle: ToolbarCoffeeView
+        get() = apply {
+            check = Check.ToolbarTitle
+        }
+
     val backButtonIsVisible: ToolbarCoffeeView
         @SuppressLint("PrivateResource")
         get() = apply {

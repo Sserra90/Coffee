@@ -14,21 +14,8 @@ import androidx.test.espresso.matcher.ViewMatchers
 import com.sserra.coffee.machers.*
 import org.hamcrest.Matchers
 
-
-infix fun ViewInteraction.hasChildThatMatch(value: String): ViewInteraction =
-        check(ViewAssertions.matches(ViewMatchers.hasDescendant(ViewMatchers.withText(value)))).isDisplayed()
-
-infix fun ViewInteraction.shouldBeRes(value: Int): ViewInteraction =
-        isDisplayed().check(ViewAssertions.matches(ViewMatchers.withText(string(value))))
-
-infix fun ViewInteraction.shouldBe(value: String): ViewInteraction =
-        isDisplayed().check(ViewAssertions.matches(ViewMatchers.withText(value)))
-
 infix fun ViewInteraction.shouldBe(value: Boolean): ViewInteraction =
         if (value) isDisplayed() else notDisplayed()
-
-infix fun ViewInteraction.numberShouldBe(value: Int): ViewInteraction =
-        check(RecyclerViewItemCountAssertion.withItemCount(value))
 
 infix fun ViewInteraction.hasChildrenNumber(value: Int): ViewInteraction =
         check(ViewAssertions.matches(ViewMatchers.hasChildCount(value)))
@@ -41,6 +28,12 @@ infix fun ViewInteraction.hasToolbarTitle(title: CharSequence): ViewInteraction 
 
 infix fun ViewInteraction.hasToolbarTitle(@StringRes title: Int): ViewInteraction =
         isDisplayed().check(ViewAssertions.matches(withToolbarTitle(title)))
+
+infix fun ViewInteraction.hasToolbarSubTitle(title: CharSequence): ViewInteraction =
+        isDisplayed().check(ViewAssertions.matches(withToolbarSubTitle(Matchers.`is`(title))))
+
+infix fun ViewInteraction.hasToolbarSubTitle(@StringRes title: Int): ViewInteraction =
+        isDisplayed().check(ViewAssertions.matches(withToolbarSubTitle(title)))
 
 infix fun ViewInteraction.hasElevation(size: Float): ViewInteraction =
         check(ViewAssertions.matches(withElevation(size)))

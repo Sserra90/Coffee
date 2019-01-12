@@ -25,6 +25,7 @@ sealed class Check {
     object ChildrenNr : Check()
     object BackgroundColor : Check()
     object ToolbarTitle : Check()
+    object ToolbarSubTitle : Check()
     object Elevation : Check()
     object TextColor : Check()
     object TextSize : Check()
@@ -116,6 +117,7 @@ abstract class BaseCoffeeView<T>(protected val viewInteraction: ViewInteraction)
             Check.ChildrenNr -> viewInteraction.hasChildrenNumber(value)
             Check.BackgroundColor -> viewInteraction.hasBackground(value)
             Check.ToolbarTitle -> viewInteraction.hasToolbarTitle(value)
+            Check.ToolbarSubTitle -> viewInteraction.hasToolbarSubTitle(value)
             Check.Text -> viewInteraction.hasText(value)
             Check.TextColor -> viewInteraction.hasTextColor(value)
             Check.Elevation -> viewInteraction.hasElevation(value)
@@ -133,6 +135,8 @@ abstract class BaseCoffeeView<T>(protected val viewInteraction: ViewInteraction)
     infix fun BaseCoffeeView<T>.shouldBe(value: String): BaseCoffeeView<T> = apply {
         when (check) {
             Check.Text -> viewInteraction.hasText(value)
+            Check.ToolbarTitle -> viewInteraction.hasToolbarTitle(value)
+            Check.ToolbarSubTitle -> viewInteraction.hasToolbarSubTitle(value)
         }
     }
 

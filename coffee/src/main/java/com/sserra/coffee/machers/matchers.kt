@@ -266,6 +266,40 @@ fun withToolbarTitle(textMatcher: Matcher<CharSequence>): Matcher<View> {
 }
 
 /**
+ * Custom matcher to check [Toolbar] subtitle
+ *
+ * @param titleRes title resource
+ */
+fun withToolbarSubTitle(titleRes: Int): Matcher<View> {
+    return object : BoundedMatcher<View, Toolbar>(Toolbar::class.java) {
+
+        var view: Toolbar? = null
+
+        public override fun matchesSafely(toolbar: Toolbar): Boolean {
+            view = toolbar
+            val expectedTitle = toolbar.context.resources?.getString(titleRes)
+            val textMatcher = Matchers.`is`(expectedTitle)
+            return textMatcher!!.matches(toolbar.subtitle)
+        }
+
+        override fun describeTo(description: Description) {
+            description.appendText("with toolbar title: ${view?.subtitle}")
+        }
+    }
+}
+
+fun withToolbarSubTitle(textMatcher: Matcher<CharSequence>): Matcher<View> {
+    return object : BoundedMatcher<View, Toolbar>(Toolbar::class.java) {
+        public override fun matchesSafely(toolbar: Toolbar): Boolean = textMatcher.matches(toolbar.subtitle)
+
+        override fun describeTo(description: Description) {
+            description.appendText("with toolbar subtitle: ")
+            textMatcher.describeTo(description)
+        }
+    }
+}
+
+/**
  * Custom matcher to check [TextView] font size
  *
  * @param expectedSize expected font size
