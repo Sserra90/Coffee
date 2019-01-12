@@ -21,7 +21,7 @@ class ToolbarCoffeeView(
 
     val subtitle: ToolbarCoffeeView
         get() = apply {
-            check = Check.ToolbarTitle
+            check = Check.ToolbarSubTitle
         }
 
     val backButtonIsVisible: ToolbarCoffeeView
