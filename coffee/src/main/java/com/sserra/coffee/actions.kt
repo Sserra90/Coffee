@@ -6,12 +6,14 @@ import android.content.ContextWrapper
 import android.content.pm.ActivityInfo
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.MenuPopupWindow
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers.allOf
 
 /**
  * An Espresso ViewAction that changes the orientation of the screen. Use like this:
@@ -65,7 +67,7 @@ class OrientationChangeAction private constructor(private val orientation: Int) 
 fun recyclerScrollTo(position: Int): ViewAction {
     return object : ViewAction {
 
-        override fun getConstraints(): Matcher<View> = org.hamcrest.Matchers.allOf(
+        override fun getConstraints(): Matcher<View> = allOf(
                 ViewMatchers.isAssignableFrom(RecyclerView::class.java),
                 ViewMatchers.isDisplayed()
         )
@@ -78,6 +80,27 @@ fun recyclerScrollTo(position: Int): ViewAction {
                     recyclerView, null, position
             )
             uiController.loopMainThreadForAtLeast(2000)
+        }
+    }
+}
+
+fun clickOnMenuItem(position: Int): ViewAction {
+    return object : ViewAction {
+
+        override fun getConstraints(): Matcher<View> = allOf(
+                ViewMatchers.isAssignableFrom(MenuPopupWindow.MenuDropDownListView::class.java),
+                ViewMatchers.isDisplayed()
+        )
+
+        override fun getDescription(): String = "click on menu item at position: $position"
+
+        override fun perform(uiController: UiController, view: View) {
+            val listView = view as MenuPopupWindow.MenuDropDownListView
+            listView.performItemClick(
+                    listView.getChildAt(position),
+                    position,
+                    listView.adapter.getItemId(position)
+            )
         }
     }
 }

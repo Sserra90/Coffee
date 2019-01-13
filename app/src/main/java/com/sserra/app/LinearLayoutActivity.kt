@@ -7,6 +7,7 @@ import android.view.Gravity
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import com.sserra.coffee.context
 
 class RelativeLayoutActivity : AppCompatActivity() {
 
@@ -34,6 +35,10 @@ class LinearLayoutActivity : AppCompatActivity() {
         title.setOnClickListener {
             val popmenu = PopupMenu(this, title, Gravity.START)
             popmenu.inflate(R.menu.menu_popup)
+            popmenu.setOnMenuItemClickListener {
+                ScrollActivity.start(this@LinearLayoutActivity)
+                true
+            }
             popmenu.show()
         }
     }

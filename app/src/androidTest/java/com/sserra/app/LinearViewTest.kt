@@ -51,6 +51,8 @@ class LinearViewTest {
                     itemsNr shouldBe 3
                     itemAt(0) {
                         title shouldBe R.string.action_settings
+                        click()
+                        isOpen<ScrollActivity>()
                     }
                 }
             }

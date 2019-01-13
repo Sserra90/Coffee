@@ -5,6 +5,7 @@ import androidx.appcompat.widget.MenuPopupWindow
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
+import com.sserra.coffee.clickOnMenuItem
 import com.sserra.coffee.machers.withMenuItemTitle
 import com.sserra.coffee.onViewWithMatcher
 import org.hamcrest.Matcher
@@ -18,6 +19,10 @@ class PopupMenuCoffeeItem(private val matcher: Matcher<View>, private val pos: I
 
     val title: PopupMenuCoffeeItem = apply {
         check = Check.Text
+    }
+
+    fun click() {
+        onViewWithMatcher(matcher).perform(clickOnMenuItem(pos))
     }
 
     infix fun PopupMenuCoffeeItem.shouldBe(value: String): PopupMenuCoffeeItem = apply {
