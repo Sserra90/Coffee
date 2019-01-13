@@ -3,8 +3,10 @@ package com.sserra.app
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.scroll_activity.*
+import androidx.appcompat.widget.PopupMenu
 
 class RelativeLayoutActivity : AppCompatActivity() {
 
@@ -27,5 +29,12 @@ class LinearLayoutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.linear_layout_activity)
+
+        val title = findViewById<TextView>(R.id.title)
+        title.setOnClickListener {
+            val popmenu = PopupMenu(this, title, Gravity.START)
+            popmenu.inflate(R.menu.menu_popup)
+            popmenu.show()
+        }
     }
 }

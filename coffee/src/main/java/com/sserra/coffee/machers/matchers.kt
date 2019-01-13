@@ -4,12 +4,14 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.method.TransformationMethod
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.widget.MenuPopupWindow.MenuDropDownListView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +26,7 @@ import org.hamcrest.Matchers
 import org.hamcrest.TypeSafeMatcher
 import java.lang.reflect.Field
 import kotlin.math.roundToInt
+
 
 /**
  * Finds the n child of a parent view.
@@ -576,5 +579,58 @@ fun withWeight(weight: Float): Matcher<View> {
             description.appendText("with weight: $actualWeight")
             description.appendValue(" expected $weight")
         }
+    }
+}
+
+/**
+ * Custom matcher to check [PopupMenu] item title
+ *
+ * @param position
+ * @param resId resource id
+ */
+fun withMenuItemTitle(position: Int, resId: Int): Matcher<View> {
+    return object : BoundedMatcher<View, MenuDropDownListView>(MenuDropDownListView::class.java) {
+
+        private var title: String? = null
+        override fun matchesSafely(listView: MenuDropDownListView): Boolean {
+
+            title = listView.context.resources.getString(resId)
+            val adapter = listView.adapter
+            val obj = adapter.getItem(position)
+            if (obj is MenuItem) {
+                return obj.title == title
+            }
+            return false
+        }
+
+        override fun describeTo(description: Description) {
+            description.appendText("with position: $position expecting title: $title")
+        }
+
+    }
+}
+
+/**
+ * Custom matcher to check [PopupMenu] item title
+ *
+ * @param position
+ * @param title
+ */
+fun withMenuItemTitle(position: Int, title: String): Matcher<View> {
+    return object : BoundedMatcher<View, MenuDropDownListView>(MenuDropDownListView::class.java) {
+
+        override fun matchesSafely(listView: MenuDropDownListView): Boolean {
+            val adapter = listView.adapter
+            val obj = adapter.getItem(position)
+            if (obj is MenuItem) {
+                return obj.title == title
+            }
+            return false
+        }
+
+        override fun describeTo(description: Description) {
+            description.appendText("with position: $position expecting title: $title")
+        }
+
     }
 }
