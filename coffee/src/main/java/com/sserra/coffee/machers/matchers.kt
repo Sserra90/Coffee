@@ -139,9 +139,7 @@ fun withDrawable(resourceId: Int): TypeSafeMatcher<View> {
         private var expectedDrawable: Drawable? = null
 
         override fun matchesSafely(target: View): Boolean {
-            if (expectedDrawable == null) {
-                loadDrawableFromResources(target.context, resourceId)
-            }
+            expectedDrawable = loadDrawableFromResources(target.context, resourceId)
 
             if (invalidExpectedDrawable()) {
                 return false
