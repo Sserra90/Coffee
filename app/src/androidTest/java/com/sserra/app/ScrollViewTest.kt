@@ -44,4 +44,32 @@ class ScrollViewTest {
             }
         }
     }
+
+    @Test
+    fun canScrollWithText() {
+        val scrollPage = ScrollPage()
+        scrollPage {
+
+            scrollView {
+                isVisible
+                scrollToViewWithText<BaseCoffeeView<*>>("Some text") {
+                    click()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun canScrollWithTag() {
+        val scrollPage = ScrollPage()
+        scrollPage {
+
+            scrollView {
+                isVisible
+                scrollToViewWithTag<BaseCoffeeView<*>>("card5") {
+                    click()
+                }
+            }
+        }
+    }
 }
