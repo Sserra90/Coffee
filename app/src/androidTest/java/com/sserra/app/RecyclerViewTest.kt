@@ -3,10 +3,7 @@ package com.sserra.app
 import android.view.View
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sserra.coffee.coffeepages.Page
-import com.sserra.coffee.coffeviews.AdapterCoffeeView
-import com.sserra.coffee.coffeviews.ItemsFactory
-import com.sserra.coffee.coffeviews.RecyclerCoffeeView
-import com.sserra.coffee.coffeviews.TextCoffeeView
+import com.sserra.coffee.coffeviews.*
 import com.sserra.coffee.intentRule
 import org.hamcrest.Matcher
 import org.junit.Before
@@ -21,8 +18,8 @@ class RecyclerViewTest {
         val recyclerView: RecyclerCoffeeView = RecyclerCoffeeView(R.id.list) { add<CityView> { CityView(it) } }
     }
 
-    class CityView(matcher: Matcher<View>) : AdapterCoffeeView<CityView>(matcher) {
-        val title: TextCoffeeView = TextCoffeeView(withId(R.id.name))
+    class CityView(matcher: Matcher<View>) : BaseCoffeeView<CityView>(matcher) {
+        val title: TextCoffeeView = TextCoffeeView(byId(R.id.name))
     }
 
     @get:Rule
