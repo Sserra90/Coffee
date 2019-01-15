@@ -3,16 +3,14 @@ package com.sserra.coffee.coffeviews
 import android.annotation.SuppressLint
 import android.view.View
 import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.sserra.coffee.*
 import org.hamcrest.Matcher
 
 
-class ToolbarCoffeeView(
-        viewInteraction: ViewInteraction
-) : BaseCoffeeView<ToolbarCoffeeView>(viewInteraction) {
+class ToolbarCoffeeView(matcher: Matcher<View>) : BaseCoffeeView<ToolbarCoffeeView>(matcher) {
 
-    constructor(id: Int) : this(onViewById(id))
-    constructor(matcher: Matcher<View>) : this(onViewWithMatcher(matcher))
+    constructor(id: Int) : this(withId(id))
 
     val title: ToolbarCoffeeView
         get() = apply {

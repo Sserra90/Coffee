@@ -16,9 +16,9 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class ScrollViewTest {
 
-    class ScrollPage : PageWithToolbar<ScrollPage>(1,1) {
+    class ScrollPage : PageWithToolbar<ScrollPage>(1, 1) {
         val scrollView = ScrollCoffeeView(R.id.scrollView) {
-            add<BaseCoffeeView<*>> { CoffeeView(onViewWithMatcher(it)) }
+            add<BaseCoffeeView<*>> { CoffeeView(it) }
         }
     }
 

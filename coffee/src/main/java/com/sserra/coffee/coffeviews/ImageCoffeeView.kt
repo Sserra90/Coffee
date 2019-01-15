@@ -2,13 +2,13 @@ package com.sserra.coffee.coffeviews
 
 import android.view.View
 import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.sserra.coffee.onViewById
 import com.sserra.coffee.onViewWithMatcher
 import org.hamcrest.Matcher
 
-class ImageButtonCoffeeView(viewInteraction: ViewInteraction) : ImageCoffeeView(viewInteraction) {
-    constructor(id: Int) : this(onViewById(id))
-    constructor(matcher: Matcher<View>) : this(onViewWithMatcher(matcher))
+open class ImageButtonCoffeeView(matcher: Matcher<View>) : ImageCoffeeView(matcher) {
+    constructor(id: Int) : this(withId(id))
 
     val text: ImageButtonCoffeeView
         get() = apply {
@@ -27,10 +27,9 @@ class ImageButtonCoffeeView(viewInteraction: ViewInteraction) : ImageCoffeeView(
 
 }
 
-open class ImageCoffeeView(viewInteraction: ViewInteraction) : BaseCoffeeView<ImageCoffeeView>(viewInteraction) {
+open class ImageCoffeeView(matcher: Matcher<View>) : BaseCoffeeView<ImageCoffeeView>(matcher) {
 
-    constructor(id: Int) : this(onViewById(id))
-    constructor(matcher: Matcher<View>) : this(onViewWithMatcher(matcher))
+    constructor(id: Int) : this(withId(id))
 
     val scaleType: ImageCoffeeView
         get() = apply {

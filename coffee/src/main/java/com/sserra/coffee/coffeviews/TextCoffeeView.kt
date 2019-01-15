@@ -2,16 +2,16 @@ package com.sserra.coffee.coffeviews
 
 import android.view.View
 import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.sserra.coffee.onViewById
 import com.sserra.coffee.onViewWithMatcher
 import org.hamcrest.Matcher
 
-open class TextCoffeeView(viewInteraction: ViewInteraction) : AbsTextCoffeeView<TextCoffeeView>(viewInteraction) {
-    constructor(matcher: Matcher<View>) : this(onViewWithMatcher(matcher))
-    constructor(id: Int) : this(onViewById(id))
+open class TextCoffeeView(matcher: Matcher<View>) : AbsTextCoffeeView<TextCoffeeView>(matcher) {
+    constructor(id: Int) : this(withId(id))
 }
 
-open class AbsTextCoffeeView<T>(viewInteraction: ViewInteraction) : BaseCoffeeView<T>(viewInteraction) {
+open class AbsTextCoffeeView<T>(matcher: Matcher<View>) : BaseCoffeeView<T>(matcher) {
 
     val text: AbsTextCoffeeView<T>
         get() = apply {

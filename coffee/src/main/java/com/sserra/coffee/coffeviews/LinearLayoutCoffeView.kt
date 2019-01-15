@@ -1,10 +1,11 @@
 package com.sserra.coffee.coffeviews
 
-import androidx.test.espresso.ViewInteraction
-import com.sserra.coffee.onViewById
+import android.view.View
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import org.hamcrest.Matcher
 
-open class ViewGroupCoffeeView<T>(viewInteraction: ViewInteraction) : BaseCoffeeView<T>(viewInteraction) {
-    constructor(id: Int) : this(onViewById(id))
+open class ViewGroupCoffeeView<T>(matcher: Matcher<View>) : BaseCoffeeView<T>(matcher) {
+    constructor(id: Int) : this(withId(id))
 
     val layoutGravity: ViewGroupCoffeeView<T>
         get() = apply {
@@ -12,8 +13,8 @@ open class ViewGroupCoffeeView<T>(viewInteraction: ViewInteraction) : BaseCoffee
         }
 }
 
-class LinearLayoutCoffeeView(viewInteraction: ViewInteraction) : ViewGroupCoffeeView<LinearLayoutCoffeeView>(viewInteraction) {
-    constructor(id: Int) : this(onViewById(id))
+open class LinearLayoutCoffeeView(matcher: Matcher<View>) : ViewGroupCoffeeView<LinearLayoutCoffeeView>(matcher) {
+    constructor(id: Int) : this(withId(id))
 
     val orientation: LinearLayoutCoffeeView
         get() = apply {
@@ -26,8 +27,8 @@ class LinearLayoutCoffeeView(viewInteraction: ViewInteraction) : ViewGroupCoffee
         }
 }
 
-class RelativeLayoutCoffeeView(viewInteraction: ViewInteraction) : ViewGroupCoffeeView<RelativeLayoutCoffeeView>(viewInteraction) {
-    constructor(id: Int) : this(onViewById(id))
+open class RelativeLayoutCoffeeView(matcher: Matcher<View>) : ViewGroupCoffeeView<RelativeLayoutCoffeeView>(matcher) {
+    constructor(id: Int) : this(withId(id))
 
     val gravity: RelativeLayoutCoffeeView
         get() = apply {

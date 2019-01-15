@@ -2,6 +2,7 @@ package com.sserra.coffee.coffeviews
 
 import android.view.View
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.sserra.coffee.machers.LayoutManager
 import com.sserra.coffee.machers.RecyclerViewMatcher
 import com.sserra.coffee.machers.withLayoutManager
@@ -25,7 +26,7 @@ class ItemsFactory(block: ItemsFactory.() -> Unit) {
 
 class Items : HashMap<KClass<*>, (matcher: Matcher<View>) -> BaseCoffeeView<*>>()
 
-class RecyclerCoffeeView(val id: Int, block: ItemsFactory.() -> Unit) : BaseCoffeeView<RecyclerCoffeeView>(onViewById(id)) {
+class RecyclerCoffeeView(id: Int, block: ItemsFactory.() -> Unit) : BaseCoffeeView<RecyclerCoffeeView>(withId(id)) {
 
     val itemsFactory: ItemsFactory = ItemsFactory(block)
 

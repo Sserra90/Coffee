@@ -1,24 +1,23 @@
 package com.sserra.coffee.coffeviews
 
 import android.view.View
-import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.sserra.coffee.*
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
 import org.junit.Assert.fail
 
 class ScrollCoffeeView(
-        viewInteraction: ViewInteraction,
+        matcher: Matcher<View>,
         block: ItemsFactory.() -> Unit
-) : BaseCoffeeView<ScrollCoffeeView>(viewInteraction) {
+) : BaseCoffeeView<ScrollCoffeeView>(matcher) {
 
     val itemsFactory: ItemsFactory = ItemsFactory(block)
 
-    constructor(id: Int, block: ItemsFactory.() -> Unit) : this(onViewById(id), block)
-    constructor(matcher: Matcher<View>, block: ItemsFactory.() -> Unit) : this(onViewWithMatcher(matcher), block)
+    constructor(id: Int, block: ItemsFactory.() -> Unit) : this(withId(id), block)
 
     inline fun <reified T : BaseCoffeeView<*>> scrollTo(id: Int, block: T.() -> Unit) {
         val factory = itemsFactory.items[T::class]

@@ -38,7 +38,7 @@ class PopupMenuCoffeeItem(private val matcher: Matcher<View>, private val pos: I
     }
 }
 
-class PopupMenuCoffeeView(private val matcher: Matcher<View>) : BaseCoffeeView<PopupMenuCoffeeView>(onViewWithMatcher(matcher)) {
+open class PopupMenuCoffeeView(matcher: Matcher<View>) : BaseCoffeeView<PopupMenuCoffeeView>(matcher) {
 
     constructor() : this(ViewMatchers.isAssignableFrom(MenuPopupWindow.MenuDropDownListView::class.java))
 

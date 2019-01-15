@@ -5,6 +5,7 @@ import android.widget.ImageView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.sserra.coffee.*
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
@@ -45,15 +46,16 @@ sealed class Check {
     object Alpha : Check()
 }
 
-open class CoffeeView(viewInteraction: ViewInteraction) : BaseCoffeeView<CoffeeView>(viewInteraction) {
-    constructor(id: Int) : this(onViewById(id))
+open class CoffeeView(matcher: Matcher<View>) : BaseCoffeeView<CoffeeView>(matcher) {
+    constructor(id: Int) : this(withId(id))
 }
 
-abstract class BaseCoffeeView<T>(protected val viewInteraction: ViewInteraction) {
+abstract class BaseCoffeeView<T>(protected val matcher: Matcher<View>) {
 
     protected var check: Check = Check.None
+    protected val viewInteraction: ViewInteraction = onViewWithMatcher(matcher)
 
-    constructor(id: Int) : this(onViewById(id))
+    constructor(id: Int) : this(withId(id))
 
     operator fun invoke(function: T.() -> Unit) {
         @Suppress("UNCHECKED_CAST")
@@ -152,7 +154,7 @@ abstract class BaseCoffeeView<T>(protected val viewInteraction: ViewInteraction)
 
 }
 
-abstract class AdapterCoffeeView<T>(private val parent: Matcher<View>) : BaseCoffeeView<T>(Espresso.onView(parent)) {
+abstract class AdapterCoffeeView<T>(private val parent: Matcher<View>) : BaseCoffeeView<T>(parent) {
     fun withId(id: Int): Matcher<View> = allOf(
             ViewMatchers.isDescendantOfA(parent),
             ViewMatchers.withId(id)
