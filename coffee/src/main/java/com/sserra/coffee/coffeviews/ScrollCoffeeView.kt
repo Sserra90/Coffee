@@ -56,6 +56,18 @@ class ScrollCoffeeView(
         block.invoke(view)
     }
 
+    inline fun <reified T : BaseCoffeeView<*>> scrollToViewWithMatcher(matcher: Matcher<View>, block: T.() -> Unit) {
+        val factory = itemsFactory.items[T::class]
+        if (factory == null) {
+            fail("No view provided for ${T::class}")
+        }
+
+        @Suppress("PROTECTED_CALL_FROM_PUBLIC_INLINE")
+        viewInteraction.scrollToViewWithMatcher(matcher)
+        val view = factory!!.invoke(matcher) as T
+        block.invoke(view)
+    }
+
     fun scrollToBottom(): ScrollCoffeeView = apply { viewInteraction.perform(swipeUp()) }
 
     fun scrollToTop(): ScrollCoffeeView = apply { viewInteraction.perform(swipeDown()) }

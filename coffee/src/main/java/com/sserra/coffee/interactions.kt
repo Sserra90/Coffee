@@ -1,5 +1,6 @@
 package com.sserra.coffee
 
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
@@ -12,6 +13,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import com.sserra.coffee.machers.*
+import org.hamcrest.Matcher
 import org.hamcrest.Matchers
 
 infix fun ViewInteraction.shouldBe(value: Boolean): ViewInteraction =
@@ -75,6 +77,7 @@ fun ViewInteraction.scrollToPos(pos: Int): ViewInteraction =
 fun ViewInteraction.scrollToViewWithId(id: Int): ViewInteraction = onViewById(id).perform(scrollTo())
 fun ViewInteraction.scrollToViewWithTag(tag: String): ViewInteraction = onViewWithTag(tag).perform(scrollTo())
 fun ViewInteraction.scrollToViewWithText(text: String): ViewInteraction = onViewWithText(text).perform(scrollTo())
+fun ViewInteraction.scrollToViewWithMatcher(matcher: Matcher<View>): ViewInteraction = onViewWithMatcher(matcher).perform(scrollTo())
 
 fun ViewInteraction.scrollRecyclerToPos(pos: Int): ViewInteraction =
         perform(recyclerScrollTo(pos))
