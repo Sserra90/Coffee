@@ -24,13 +24,13 @@ ext {
     coffee = "b75645bf95"
     ext_junit = "1.0.0"
     espresso_test = "3.1.1"
+    barista = "2.7.1"
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(":coffee")
-    //implementation "com.github.Sserra90:Coffee:$coffee"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'

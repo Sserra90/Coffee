@@ -337,11 +337,17 @@ fun withElevation(expectedSize: Int): Matcher<View> {
 
         override fun matchesSafely(target: View): Boolean {
             view = target
-            return target.elevation.toDp.roundToInt() == expectedSize
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                target.elevation.toDp.roundToInt() == expectedSize
+            } else {
+                true
+            }
         }
 
         override fun describeTo(description: Description) {
-            description.appendText("with elevation size: ${view?.elevation}")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                description.appendText("with elevation size: ${view?.elevation}")
+            }
             description.appendValue(expectedSize)
         }
     }

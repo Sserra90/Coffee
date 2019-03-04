@@ -6,14 +6,20 @@ import android.content.ContextWrapper
 import android.content.pm.ActivityInfo
 import android.view.View
 import android.view.ViewGroup
+import android.widget.HorizontalScrollView
+import android.widget.ScrollView
 import androidx.appcompat.widget.MenuPopupWindow
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ScrollToAction
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.espresso.matcher.ViewMatchers.*
+import com.schibsted.spain.barista.internal.viewaction.NestedEnabledScrollToAction
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.anyOf
 
 /**
  * An Espresso ViewAction that changes the orientation of the screen. Use like this:
@@ -102,5 +108,35 @@ fun clickOnMenuItem(position: Int): ViewAction {
                     listView.adapter.getItemId(position)
             )
         }
+    }
+}
+
+fun waitFor(millis: Long): ViewAction {
+    return object : ViewAction {
+        override fun getConstraints(): Matcher<View> = isRoot()
+
+        override fun getDescription(): String = "Wait for $millis milliseconds."
+
+        override fun perform(uiController: UiController, view: View) {
+            uiController.loopMainThreadForAtLeast(millis)
+        }
+    }
+}
+
+fun nestedScrollToAction(): ViewAction {
+    return object : ViewAction {
+        private val scrollToAction: ScrollToAction = ScrollToAction()
+
+        override fun getConstraints(): Matcher<View> {
+            return allOf(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE), isDescendantOfA(anyOf<View>(
+                    isAssignableFrom(ScrollView::class.java), isAssignableFrom(HorizontalScrollView::class.java),
+                    isAssignableFrom(NestedScrollView::class.java))))
+        }
+
+        override fun perform(uiController: UiController, view: View) {
+            scrollToAction.perform(uiController, view)
+        }
+
+        override fun getDescription(): String = scrollToAction.description
     }
 }
