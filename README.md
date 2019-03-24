@@ -149,6 +149,29 @@ Let's see how it works:
        }
     }
 
+# Pages
+A Page represents a screen in you app. There are two types of Pages you can extend: **Page** and **PageWithToolbar**.
+
+A Page has a set of actions you can perform:
+
+ - changeToLandscape()
+ - changeToPortrait()
+ - navigateBack()
+ - isOpen< T>() // Checks if an activity is open, this needs **IntentsTestRule**
+ - isClosed(activityRule)
+
+**PageWithToolbar** is just a convenience class that receives a Toolbar and AppBar id in constructor and has a Toolbar and AppBar view.
+
+    class SomePage : PageWithToolbar<ScrollPage>(R.id.toolbar, R.id.appbar)
+	
+	somePage{
+		// Up navigation
+		navigateUp()
+		toolbar{
+			title shouldBe "Some title"
+		}
+	}
+
 # Create your own view
 
 # Supported views and assertions/actions
@@ -173,8 +196,11 @@ Here a list of available views and respective properties and actions you can use
 | **ViewPager**                    | ViewPagerCoffeeView      |                                                                                                                              | swipeForward(), swipeBackward()                                                                                                           |                                             |
 | **Toolbar**                      | ToolbarCoffeeView        | title, subtitle, backButtonIsVisible                                                                                         | clickBackButton                                                                                                                           |                                             |
 # Install
-Just add gradle dependency
+Just add gradle dependency, see the latest commit/release available in https://jitpack.io/#Sserra90/Coffee
 
+    dependencies {
+    	implementation 'com.github.Sserra90:Coffee:Tag'
+    }
 
 # Contact
 sergioserra99@gmail.com
