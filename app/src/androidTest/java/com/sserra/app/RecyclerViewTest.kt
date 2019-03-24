@@ -1,7 +1,7 @@
 package com.sserra.app
 
 import android.view.View
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.runner.AndroidJUnit4
 import com.sserra.coffee.coffeepages.Page
 import com.sserra.coffee.coffeviews.*
 import com.sserra.coffee.intentRule

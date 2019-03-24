@@ -57,6 +57,8 @@ class RelativeViewTest {
                     isVisible
                     scaleType shouldBe CENTER_CROP
                     alpha shouldBe 0.8F
+
+                    isBelow(title)
                 }
 
                 editText.write("Some value")

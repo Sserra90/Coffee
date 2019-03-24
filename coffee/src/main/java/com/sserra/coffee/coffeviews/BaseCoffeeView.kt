@@ -2,8 +2,8 @@ package com.sserra.coffee.coffeviews
 
 import android.view.View
 import android.widget.ImageView
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.assertion.PositionAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.sserra.coffee.*
@@ -153,6 +153,21 @@ abstract class BaseCoffeeView<T>(protected val matcher: Matcher<View>) : BaseVie
         viewInteraction.hasScaleType(scaleType)
     }
 
+    fun isBelow(target: BaseCoffeeView<*>) {
+        viewInteraction.check(PositionAssertions.isCompletelyBelow(target.matcher))
+    }
+
+    fun isAbove(target: BaseCoffeeView<*>) {
+        viewInteraction.check(PositionAssertions.isCompletelyAbove(target.matcher))
+    }
+
+    fun isLeftOf(target: BaseCoffeeView<*>) {
+        viewInteraction.check(PositionAssertions.isCompletelyLeftOf(target.matcher))
+    }
+
+    fun isRightOf(target: BaseCoffeeView<*>) {
+        viewInteraction.check(PositionAssertions.isCompletelyRightOf(target.matcher))
+    }
 }
 
 abstract class BaseViewMatchers(private val parent: Matcher<View>) {
